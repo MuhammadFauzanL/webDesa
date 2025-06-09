@@ -1,264 +1,275 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WebDesa-berita</title>
-    <link href="/src/style.css" rel="stylesheet">
-    <style>
-    *{
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WebDesa-berita</title>
+  <link href="/src/style.css" rel="stylesheet">
+  <style>
+    * {
       box-sizing: border-box;
-      }
+    }
 
     .hide-scroll-bar {
-        -ms-overflow-style: none;
-        scrollbar-width: none;
-            }
-    .hide-scroll-bar::-webkit-scrollbar {
-        display: none;
+      -ms-overflow-style: none;
+      scrollbar-width: none;
     }
-    </style>
+
+    .hide-scroll-bar::-webkit-scrollbar {
+      display: none;
+    }
+  </style>
 </head>
+
 <body class="">
-    <header class="flex items-center justify-between md:px-[8vw] px-[3vw] bg-gray-50  h-14 text-black shadow-sm fixed top-0 left-0 w-full z-50">
-        <div class="logo">
-            <a class="flex items-center gap-1" href="">
-                <img class="h-7 -mt-1" src="https://img.icons8.com/pastel-glyph/64/40C057/marker--v1.png" alt="marker--v1"/>
-                <span class="text-lg font-bold">Desa Cibiru</span>
-            </a>
-        </div>
-        <nav>
-            <ul class="flex font-medium items-center gap-2 [&>li>a]:px-3 [&>li>a]:py-1 [&>li>a:hover]:outline-emerald-500 [&>li>a]:rounded-lg">
-                <li><a href="index.html" class="hover:outline-2">Profil</a></li>
-                <li><a href="berita.html" class="outline-2 outline-emerald-400 bg-emerald-100 ">Berita</a></li>
-                <li><a href="layanan.html" class="hover:outline-2">Layanan</a></li>
-                <li><a href="" class="hover:outline-2">Admin Panel</a>
-            </ul>
-        </nav>
-    </header>
-<div class="flex flex-col w-screen h-[90vh] items-start justify-start pt-22 bg-[#D9FFE6]">
-  <div class="pl-40 pt-5">
-    <h4 class="text-2xl text-emerald-600 font-semibold pl-5">Berita & Artikel Desa</h4>
-  </div>
-  <div class="w-full overflow-hidden">
-    <ul class="flex overflow-x-scroll hide-scroll-bar font-medium gap-5 px-30 py-8">
-      <!-- Kartu Berita -->
-     
-
-      <!-- Salin elemen li berikut untuk berita lainnya -->
-      <!-- Berita 2 -->
-    
-      <li class="flex-shrink-0 w-90">
-        <div class="bg-white rounded-2xl shadow-md w-full">
-          <a href="#">
-            <img class="rounded-t-lg w-full" src="src/berita1.png" alt="Gambar berita 2" />
-          </a>
-          <div class="px-5 py-3">
-            <a class="flex items-center gap-1 text-[#139B82]">
-             
-                <img width="23" src="https://img.icons8.com/?size=100&id=84851&format=png&color=139B82" alt="calendar"/>
-              
-              <span>07 Mei 2025</span>
-            </a>
-
-            <a href="#">
-              <h5 class="mt-2 text-lg font-semibold tracking-tight text-gray-900 dark:text-black">Berita 2</h5>
-            </a>
-            <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">
-              Here are the biggest enterprise technology acquisitions of 2021 so far.
-            </p>
-            <a href="#" class="inline-flex items-center px-3 py-3 text-sm font-medium text-emerald-400">
-          
-                 Baca Selengkapnya
-            
-              <svg class="w-3.5  ms-2 h-3.5 -mb-1" fill="none" viewBox="0 0 14 10">
-                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                  d="M1 5h12m0 0L9 1m4 4L9 9" />
-              </svg>
-            </a>
-          </div>
-        </div>
-      </li>
-      <li class="flex-shrink-0 w-90">
-        <div class="bg-white rounded-2xl shadow-md w-full">
-          <a href="#">
-            <img class="rounded-t-lg w-full" src="src/berita1.png" alt="Gambar berita 2" />
-          </a>
-          <div class="px-5 py-3">
-            <a class="flex items-center gap-1 text-[#139B82]">
-             
-                <img width="23" src="https://img.icons8.com/?size=100&id=84851&format=png&color=139B82" alt="calendar"/>
-              
-              <span>07 Mei 2025</span>
-            </a>
-
-            <a href="#">
-              <h5 class="mt-2 text-lg font-semibold tracking-tight text-gray-900 dark:text-black">Berita 2</h5>
-            </a>
-            <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">
-              Here are the biggest enterprise technology acquisitions of 2021 so far.
-            </p>
-            <a href="#" class="inline-flex items-center px-3 py-3 text-sm font-medium text-emerald-400">
-          
-                 Baca Selengkapnya
-            
-              <svg class="w-3.5  ms-2 h-3.5 -mb-1" fill="none" viewBox="0 0 14 10">
-                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                  d="M1 5h12m0 0L9 1m4 4L9 9" />
-              </svg>
-            </a>
-          </div>
-        </div>
-      </li>
-      <li class="flex-shrink-0 w-90">
-        <div class="bg-white rounded-2xl shadow-md w-full">
-          <a href="#">
-            <img class="rounded-t-lg w-full" src="src/berita1.png" alt="Gambar berita 2" />
-          </a>
-          <div class="px-5 py-3">
-            <a class="flex items-center gap-1 text-[#139B82]">
-             
-                <img width="23" src="https://img.icons8.com/?size=100&id=84851&format=png&color=139B82" alt="calendar"/>
-              
-              <span>07 Mei 2025</span>
-            </a>
-
-            <a href="#">
-              <h5 class="mt-2 text-lg font-semibold tracking-tight text-gray-900 dark:text-black">Berita 2</h5>
-            </a>
-            <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">
-              Here are the biggest enterprise technology acquisitions of 2021 so far.
-            </p>
-            <a href="#" class="inline-flex items-center px-3 py-3 text-sm font-medium text-emerald-400">
-          
-                 Baca Selengkapnya
-            
-              <svg class="w-3.5  ms-2 h-3.5 -mb-1" fill="none" viewBox="0 0 14 10">
-                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                  d="M1 5h12m0 0L9 1m4 4L9 9" />
-              </svg>
-            </a>
-          </div>
-        </div>
-      </li>
-      <li class="flex-shrink-0 w-90">
-        <div class="bg-white rounded-2xl shadow-md w-full">
-          <a href="#">
-            <img class="rounded-t-lg w-full" src="src/berita1.png" alt="Gambar berita 2" />
-          </a>
-          <div class="px-5 py-3">
-            <a class="flex items-center gap-1 text-[#139B82]">
-             
-                <img width="23" src="https://img.icons8.com/?size=100&id=84851&format=png&color=139B82" alt="calendar"/>
-              
-              <span>07 Mei 2025</span>
-            </a>
-
-            <a href="#">
-              <h5 class="mt-2 text-lg font-semibold tracking-tight text-gray-900 dark:text-black">Berita 2</h5>
-            </a>
-            <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">
-              Here are the biggest enterprise technology acquisitions of 2021 so far.
-            </p>
-            <a href="#" class="inline-flex items-center px-3 py-3 text-sm font-medium text-emerald-400">
-          
-                 Baca Selengkapnya
-            
-              <svg class="w-3.5  ms-2 h-3.5 -mb-1" fill="none" viewBox="0 0 14 10">
-                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                  d="M1 5h12m0 0L9 1m4 4L9 9" />
-              </svg>
-            </a>
-          </div>
-        </div>
-      </li>
-      <li class="flex-shrink-0 w-90">
-        <div class="bg-white rounded-2xl shadow-md w-full">
-          <a href="#">
-            <img class="rounded-t-lg w-full" src="src/berita1.png" alt="Gambar berita 2" />
-          </a>
-          <div class="px-5 py-3">
-            <a class="flex items-center gap-1 text-[#139B82]">
-             
-                <img width="23" src="https://img.icons8.com/?size=100&id=84851&format=png&color=139B82" alt="calendar"/>
-              
-              <span>07 Mei 2025</span>
-            </a>
-
-            <a href="#">
-              <h5 class="mt-2 text-lg font-semibold tracking-tight text-gray-900 dark:text-black">Berita 2</h5>
-            </a>
-            <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">
-              Here are the biggest enterprise technology acquisitions of 2021 so far.
-            </p>
-            <a href="#" class="inline-flex items-center px-3 py-3 text-sm font-medium text-emerald-400">
-          
-                 Baca Selengkapnya
-            
-              <svg class="w-3.5  ms-2 h-3.5 -mb-1" fill="none" viewBox="0 0 14 10">
-                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                  d="M1 5h12m0 0L9 1m4 4L9 9" />
-              </svg>
-            </a>
-          </div>
-        </div>
-      </li>
-      <li class="flex-shrink-0 w-90">
-        <div class="bg-white rounded-2xl shadow-md w-full">
-          <a href="#">
-            <img class="rounded-t-lg w-full" src="src/berita1.png" alt="Gambar berita 2" />
-          </a>
-          <div class="px-5 py-3">
-            <a class="flex items-center gap-1 text-[#139B82]">
-             
-                <img width="23" src="https://img.icons8.com/?size=100&id=84851&format=png&color=139B82" alt="calendar"/>
-              
-              <span>07 Mei 2025</span>
-            </a>
-
-            <a href="#">
-              <h5 class="mt-2 text-lg font-semibold tracking-tight text-gray-900 dark:text-black">Berita 2</h5>
-            </a>
-            <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">
-              Here are the biggest enterprise technology acquisitions of 2021 so far.
-            </p>
-            <a href="#" class="inline-flex items-center px-3 py-3 text-sm font-medium text-emerald-400">
-          
-                 Baca Selengkapnya
-            
-              <svg class="w-3.5  ms-2 h-3.5 -mb-1" fill="none" viewBox="0 0 14 10">
-                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                  d="M1 5h12m0 0L9 1m4 4L9 9" />
-              </svg>
-            </a>
-          </div>
-        </div>
-      </li>
-      
-
-      <!-- Tambahkan berita lain di sini jika perlu -->
-
-    </ul>
-  </div>
-</div>
-<footer class="flex w-screen h-[10vh] items-start justify-between bg-[#139B82] px-[10vw] pt-5">
-  <div class="mt-1">
-            <a class="flex items-center gap-1" href="">
-                <img class="h-7 -mt-1" src="https://img.icons8.com/pastel-glyph/64/FFFFFF/marker--v1.png" alt="marker--v1"/>
-            </a>
-        </div>
-  <div class="flex gap-2 mt-1"> 
-    <a href="">
-      <img src="https://img.icons8.com/?size=25&id=118466&format=png&color=FFFFFF" alt="">
-    </a>
-    <a href="">
-       <img src="https://img.icons8.com/?size=25&id=85088&format=png&color=FFFFFF" alt=""><img src="" alt="">
-    </a>
-    <a href="">
-      <img src="https://img.icons8.com/?size=25&id=32309&format=png&color=FFFFFF" alt="">
-    </a>
+  <header
+    class="flex items-center justify-between md:px-[8vw] px-[3vw] bg-gray-50  h-14 text-black shadow-sm fixed top-0 left-0 w-full z-50">
+    <div class="logo">
+      <a class="flex items-center gap-1" href="">
+        <img class="h-7 -mt-1" src="https://img.icons8.com/pastel-glyph/64/40C057/marker--v1.png" alt="marker--v1" />
+        <span class="text-lg font-bold">Desa Cibiru</span>
+      </a>
     </div>
-</footer>
+    <nav>
+      <ul
+        class="flex font-medium items-center gap-2 [&>li>a]:px-3 [&>li>a]:py-1 [&>li>a:hover]:outline-emerald-500 [&>li>a]:rounded-lg">
+        <li><a href="index.html" class="hover:outline-2">Profil</a></li>
+        <li><a href="berita.html" class="outline-2 outline-emerald-400 bg-emerald-100 ">Berita</a></li>
+        <li><a href="layanan.html" class="hover:outline-2">Layanan</a></li>
+        <li><a href="" class="hover:outline-2">Admin Panel</a>
+      </ul>
+    </nav>
+  </header>
+  <div class="flex flex-col w-screen h-[90vh] items-start justify-start pt-22 bg-[#D9FFE6]">
+    <div class="pl-[14vw] pt-5">
+      <h4 class="text-2xl text-emerald-600 font-semibold pl-5">Berita & Artikel Desa</h4>
+    </div>
+    <div class="w-full overflow-hidden">
+      <ul class="flex overflow-x-scroll hide-scroll-bar font-medium gap-5 px-30 py-8">
+        <!-- Kartu Berita -->
+
+
+        <!-- Salin elemen li berikut untuk berita lainnya -->
+        <!-- Berita 2 -->
+
+        <li class="flex-shrink-0 w-90">
+          <div class="bg-white rounded-2xl shadow-md w-full">
+            <a href="#">
+              <img class="rounded-t-lg w-full" src="src/berita1.png" alt="Gambar berita 2" />
+            </a>
+            <div class="px-5 py-3">
+              <a class="flex items-center gap-1 text-[#139B82]">
+
+                <img width="23" src="https://img.icons8.com/?size=100&id=84851&format=png&color=139B82"
+                  alt="calendar" />
+
+                <span>07 Mei 2025</span>
+              </a>
+
+              <a href="#">
+                <h5 class="mt-2 text-lg font-semibold tracking-tight text-gray-900 dark:text-black">Berita 2</h5>
+              </a>
+              <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">
+                Here are the biggest enterprise technology acquisitions of 2021 so far.
+              </p>
+              <a href="#" class="inline-flex items-center px-3 py-3 text-sm font-medium text-emerald-400">
+
+                Baca Selengkapnya
+
+                <svg class="w-3.5  ms-2 h-3.5 -mb-1" fill="none" viewBox="0 0 14 10">
+                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M1 5h12m0 0L9 1m4 4L9 9" />
+                </svg>
+              </a>
+            </div>
+          </div>
+        </li>
+        <li class="flex-shrink-0 w-90">
+          <div class="bg-white rounded-2xl shadow-md w-full">
+            <a href="#">
+              <img class="rounded-t-lg w-full" src="src/berita1.png" alt="Gambar berita 2" />
+            </a>
+            <div class="px-5 py-3">
+              <a class="flex items-center gap-1 text-[#139B82]">
+
+                <img width="23" src="https://img.icons8.com/?size=100&id=84851&format=png&color=139B82"
+                  alt="calendar" />
+
+                <span>07 Mei 2025</span>
+              </a>
+
+              <a href="#">
+                <h5 class="mt-2 text-lg font-semibold tracking-tight text-gray-900 dark:text-black">Berita 2</h5>
+              </a>
+              <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">
+                Here are the biggest enterprise technology acquisitions of 2021 so far.
+              </p>
+              <a href="#" class="inline-flex items-center px-3 py-3 text-sm font-medium text-emerald-400">
+
+                Baca Selengkapnya
+
+                <svg class="w-3.5  ms-2 h-3.5 -mb-1" fill="none" viewBox="0 0 14 10">
+                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M1 5h12m0 0L9 1m4 4L9 9" />
+                </svg>
+              </a>
+            </div>
+          </div>
+        </li>
+        <li class="flex-shrink-0 w-90">
+          <div class="bg-white rounded-2xl shadow-md w-full">
+            <a href="#">
+              <img class="rounded-t-lg w-full" src="src/berita1.png" alt="Gambar berita 2" />
+            </a>
+            <div class="px-5 py-3">
+              <a class="flex items-center gap-1 text-[#139B82]">
+
+                <img width="23" src="https://img.icons8.com/?size=100&id=84851&format=png&color=139B82"
+                  alt="calendar" />
+
+                <span>07 Mei 2025</span>
+              </a>
+
+              <a href="#">
+                <h5 class="mt-2 text-lg font-semibold tracking-tight text-gray-900 dark:text-black">Berita 2</h5>
+              </a>
+              <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">
+                Here are the biggest enterprise technology acquisitions of 2021 so far.
+              </p>
+              <a href="#" class="inline-flex items-center px-3 py-3 text-sm font-medium text-emerald-400">
+
+                Baca Selengkapnya
+
+                <svg class="w-3.5  ms-2 h-3.5 -mb-1" fill="none" viewBox="0 0 14 10">
+                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M1 5h12m0 0L9 1m4 4L9 9" />
+                </svg>
+              </a>
+            </div>
+          </div>
+        </li>
+        <li class="flex-shrink-0 w-90">
+          <div class="bg-white rounded-2xl shadow-md w-full">
+            <a href="#">
+              <img class="rounded-t-lg w-full" src="src/berita1.png" alt="Gambar berita 2" />
+            </a>
+            <div class="px-5 py-3">
+              <a class="flex items-center gap-1 text-[#139B82]">
+
+                <img width="23" src="https://img.icons8.com/?size=100&id=84851&format=png&color=139B82"
+                  alt="calendar" />
+
+                <span>07 Mei 2025</span>
+              </a>
+
+              <a href="#">
+                <h5 class="mt-2 text-lg font-semibold tracking-tight text-gray-900 dark:text-black">Berita 2</h5>
+              </a>
+              <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">
+                Here are the biggest enterprise technology acquisitions of 2021 so far.
+              </p>
+              <a href="#" class="inline-flex items-center px-3 py-3 text-sm font-medium text-emerald-400">
+
+                Baca Selengkapnya
+
+                <svg class="w-3.5  ms-2 h-3.5 -mb-1" fill="none" viewBox="0 0 14 10">
+                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M1 5h12m0 0L9 1m4 4L9 9" />
+                </svg>
+              </a>
+            </div>
+          </div>
+        </li>
+        <li class="flex-shrink-0 w-90">
+          <div class="bg-white rounded-2xl shadow-md w-full">
+            <a href="#">
+              <img class="rounded-t-lg w-full" src="src/berita1.png" alt="Gambar berita 2" />
+            </a>
+            <div class="px-5 py-3">
+              <a class="flex items-center gap-1 text-[#139B82]">
+
+                <img width="23" src="https://img.icons8.com/?size=100&id=84851&format=png&color=139B82"
+                  alt="calendar" />
+
+                <span>07 Mei 2025</span>
+              </a>
+
+              <a href="#">
+                <h5 class="mt-2 text-lg font-semibold tracking-tight text-gray-900 dark:text-black">Berita 2</h5>
+              </a>
+              <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">
+                Here are the biggest enterprise technology acquisitions of 2021 so far.
+              </p>
+              <a href="#" class="inline-flex items-center px-3 py-3 text-sm font-medium text-emerald-400">
+
+                Baca Selengkapnya
+
+                <svg class="w-3.5  ms-2 h-3.5 -mb-1" fill="none" viewBox="0 0 14 10">
+                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M1 5h12m0 0L9 1m4 4L9 9" />
+                </svg>
+              </a>
+            </div>
+          </div>
+        </li>
+        <li class="flex-shrink-0 w-90">
+          <div class="bg-white rounded-2xl shadow-md w-full">
+            <a href="#">
+              <img class="rounded-t-lg w-full" src="src/berita1.png" alt="Gambar berita 2" />
+            </a>
+            <div class="px-5 py-3">
+              <a class="flex items-center gap-1 text-[#139B82]">
+
+                <img width="23" src="https://img.icons8.com/?size=100&id=84851&format=png&color=139B82"
+                  alt="calendar" />
+
+                <span>07 Mei 2025</span>
+              </a>
+
+              <a href="#">
+                <h5 class="mt-2 text-lg font-semibold tracking-tight text-gray-900 dark:text-black">Berita 2</h5>
+              </a>
+              <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">
+                Here are the biggest enterprise technology acquisitions of 2021 so far.
+              </p>
+              <a href="#" class="inline-flex items-center px-3 py-3 text-sm font-medium text-emerald-400">
+
+                Baca Selengkapnya
+
+                <svg class="w-3.5  ms-2 h-3.5 -mb-1" fill="none" viewBox="0 0 14 10">
+                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M1 5h12m0 0L9 1m4 4L9 9" />
+                </svg>
+              </a>
+            </div>
+          </div>
+        </li>
+
+
+        <!-- Tambahkan berita lain di sini jika perlu -->
+
+      </ul>
+    </div>
+  </div>
+  <footer class="flex w-screen h-[10vh] items-start justify-between bg-[#139B82] px-[10vw] pt-5">
+    <div class="mt-1">
+      <a class="flex items-center gap-1" href="">
+        <img class="h-7 -mt-1" src="https://img.icons8.com/pastel-glyph/64/FFFFFF/marker--v1.png" alt="marker--v1" />
+      </a>
+    </div>
+    <div class="flex gap-2 mt-1">
+      <a href="">
+        <img src="https://img.icons8.com/?size=25&id=118466&format=png&color=FFFFFF" alt="">
+      </a>
+      <a href="">
+        <img src="https://img.icons8.com/?size=25&id=85088&format=png&color=FFFFFF" alt=""><img src="" alt="">
+      </a>
+      <a href="">
+        <img src="https://img.icons8.com/?size=25&id=32309&format=png&color=FFFFFF" alt="">
+      </a>
+    </div>
+  </footer>
 
 
 

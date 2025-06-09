@@ -1,24 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WebDesa</title>
+    <title>WebDesa-layanan</title>
     <link href="/src/style.css" rel="stylesheet">
     <style>
-        
+
     </style>
 </head>
+
 <body class="">
-    <header class="flex items-center justify-between md:px-[8vw] px-[3vw] bg-gray-50  h-14 text-black shadow-sm fixed top-0 left-0 w-full z-50">
+    <header
+        class="flex items-center justify-between md:px-[8vw] px-[3vw] bg-gray-50  h-14 text-black shadow-sm fixed top-0 left-0 w-full z-50">
         <div class="logo">
             <a class="flex items-center gap-1" href="">
-                <img class="h-7 -mt-1" src="https://img.icons8.com/pastel-glyph/64/40C057/marker--v1.png" alt="marker--v1"/>
+                <img class="h-7 -mt-1" src="https://img.icons8.com/pastel-glyph/64/40C057/marker--v1.png"
+                    alt="marker--v1" />
                 <span class="text-sm font-bold">Desa Cibiru</span>
             </a>
         </div>
         <nav>
-            <ul class="flex font-medium items-center gap-2 [&>li>a]:px-3 [&>li>a]:py-1 [&>li>a:hover]:outline-emerald-500 [&>li>a]:rounded-lg">
+            <ul
+                class="flex font-medium items-center gap-2 [&>li>a]:px-3 [&>li>a]:py-1 [&>li>a:hover]:outline-emerald-500 [&>li>a]:rounded-lg">
                 <li><a href="index.html" class="hover:outline-2 ">Profil</a></li>
                 <li><a href="berita.html" class="hover:outline-2">Berita</a></li>
                 <li><a href="layanan.html" class="outline-2 outline-emerald-400 bg-emerald-100">Layanan</a></li>
@@ -26,13 +31,64 @@
             </ul>
         </nav>
     </header>
-   <div class="flex w-[100vw] h-screen items-center justify-center border-2 md:px-[8vw] px-[3vw]">
-        <div class="box-content w-[50vw] h-[60vh] p-4 my-20 mx-5 rounded-3xl shadow-xl/10">
-            profil
+    <section class="flex flex-col w-screen h-[90vh] bg-white">
+        <div class="pl-[14vw] pt-27 pb-10">
+            <h4 class="text-2xl text-[#139B82] font-semibold pl-5">Layanan Masyarakat Desa</h4>
         </div>
-        <div class="box-content w-[30vw] h-[40vh] p-4 m-10 rounded-3xl shadow-xl/10">
-            map
+        <div class="max-w-6xl mx-auto px-4 grid grid-cols-2 gap-6 pb-12">
+            <div class="bg-[#D9FFE6] rounded-2xl shadow-lg/20 p-6 space-y-4">
+                <div class="flex items-center gap-2 text-[#139B82] font-semibold text-xl pb-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M5.121 17.804A4.992 4.992 0 017 17h10a4.992 4.992 0 011.879.804M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
+                    <span>Aspirasi Masyarakat</span>
+                </div>
+                <input type="text" placeholder="Nama Anda" class="w-full p-3 rounded bg-white text-sm" />
+                <input type="email" placeholder="Email (opsional)" class="w-full p-3 rounded bg-white text-sm" />
+                <textarea rows="4" placeholder="Sampaikan aspirasi, saran dan keluhan Anda"
+                    class="w-full p-3 rounded bg-white text-sm"></textarea>
+                <button class="w-full bg-[#139B82] text-white py-2 rounded hover:bg-emerald-400 font-semibold">Kirim Aspirasi</button>
+            </div>
+
+            <div class="bg-[#D9FFE6] rounded-2xl shadow-lg/20 p-6 space-y-4">
+                <div class="flex items-center gap-2 pb-2 text-[#139B82] font-semibold text-xl">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M3 7v4a1 1 0 001 1h3m10 0h3a1 1 0 001-1V7M6 21h12a2 2 0 002-2v-7H4v7a2 2 0 002 2z" />
+                    </svg>
+                    <span>Peminjaman Sarana/Prasarana</span>
+                </div>
+                <input type="text" placeholder="Nama Pemohon" class="w-full p-3 rounded bg-white  text-sm" />
+                <input type="text" placeholder="Keperluan/ Jenis Sarana" class="w-full p-3 rounded bg-white  text-sm" />
+                <input type="date" class="w-full p-3 rounded bg-white text-sm" />
+                <button class="w-full bg-[#139B82] text-white py-2 rounded hover:bg-emerald-400 font-semibold">Ajukan
+                    Peminjaman</button>
+            </div>
         </div>
-    </div>
+
+    </section>
+    <footer class="flex w-screen h-[10vh] items-start justify-between bg-[#139B82] px-[10vw] pt-5">
+        <div class="mt-1">
+            <a class="flex items-center gap-1" href="">
+                <img class="h-7 -mt-1" src="https://img.icons8.com/pastel-glyph/64/FFFFFF/marker--v1.png"
+                    alt="marker--v1" />
+            </a>
+        </div>
+        <div class="flex gap-2 mt-1">
+            <a href="">
+                <img src="https://img.icons8.com/?size=25&id=118466&format=png&color=FFFFFF" alt="">
+            </a>
+            <a href="">
+                <img src="https://img.icons8.com/?size=25&id=85088&format=png&color=FFFFFF" alt=""><img src="" alt="">
+            </a>
+            <a href="">
+                <img src="https://img.icons8.com/?size=25&id=32309&format=png&color=FFFFFF" alt="">
+            </a>
+        </div>
+    </footer>
+
 
 </body>
