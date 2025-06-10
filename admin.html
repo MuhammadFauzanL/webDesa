@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel</title>
+    <link href="/src/style.css" rel="stylesheet">
+</head>
+
+<body class="bg-gray-100 min-h-screen flex flex-col items-center">
+    <header
+        class="flex items-center justify-between md:px-[8vw] px-[3vw] bg-gray-50 h-14 text-black shadow-sm fixed top-0 left-0 w-full z-50">
+        <div class="logo">
+            <a class="flex items-center gap-1" href="">
+                <img class="h-7 -mt-1" src="https://img.icons8.com/pastel-glyph/64/40C057/marker--v1.png"
+                    alt="marker--v1" />
+                <span class="text-lg font-bold">Desa Cibiru</span>
+            </a>
+        </div>
+        <nav>
+            <ul
+                class="flex font-medium items-center gap-2 [&>li>a]:px-3 [&>li>a]:py-1 [&>li>a:hover]:outline-emerald-500 [&>li>a]:rounded-lg">
+                <li><a href="index.html" class="hover:outline-2">Profil</a></li>
+                <li><a href="berita.html" class="outline-2 outline-emerald-400 bg-emerald-100 ">Berita</a></li>
+                <li><a href="layanan.html" class="hover:outline-2">Layanan</a></li>
+                <li><a href="admin.html" class="hover:outline-2">Admin Panel</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="flex flex-col gap-5 h-[90vh]">
+        <div class="pl-5 pt-28">
+            <h4 class="text-2xl text-[#139B82] font-semibold">Admin Panel</h4>
+        </div>
+
+        <div class="flex flex-col md:flex-row gap-6">
+            <!-- Upload Berita -->
+            <div class="bg-green-100 p-6 rounded-2xl shadow-md w-[340px] md:w-[35vw]">
+                <div class="flex items-center mb-4">
+                    <svg class="w-6 h-6 text-[#139B82] mr-2" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M4 3a2 2 0 00-2 2v2h16V5a2 2 0 00-2-2H4zm14 5H2v7a2 2 0 002 2h12a2 2 0 002-2V8z" />
+                    </svg>
+                    <h2 class="text-[#139B82] font-semibold text-lg">Upload Berita</h2>
+                </div>
+                <form class="flex flex-col gap-3">
+                    <input type="text" placeholder="Judul Berita"
+                        class="bg-white px-3 py-2 rounded shadow-sm border border-gray-300 focus:outline-none focus:ring-2 focus:ring-emerald-400">
+                    <input type="date"
+                        class="bg-white px-3 py-2 rounded shadow-sm border border-gray-300 focus:outline-none focus:ring-2 focus:ring-emerald-400">
+                    <textarea placeholder="Isi Berita" rows="4"
+                        class="bg-white px-3 py-2 rounded shadow-sm border border-gray-300 focus:outline-none focus:ring-2 focus:ring-emerald-400"></textarea>
+                    <label class="text-sm font-medium text-[#139B82]">Upload Gambar Thumbnails</label>
+                    <input type="file" accept="image/*"
+                        class="bg-white px-3 py-2 rounded shadow-sm border border-gray-300 focus:outline-none focus:ring-2 focus:ring-emerald-400 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-[#139B82] file:text-white hover:file:bg-emerald-800">
+                    <button type="submit"
+                        class="bg-[#139B82] text-white py-2 rounded shadow hover:bg-emerald-800 transition">Upload
+                        Berita</button>
+                </form>
+            </div>
+
+            <!-- Edit Profil Desa -->
+            <div class="bg-green-100 p-6 rounded-2xl shadow-md w-[340px] md:w-[35vw]">
+                <div class="flex items-center mb-4">
+                    <svg class="w-6 h-6 text-[#139B82] mr-2" fill="currentColor" viewBox="0 0 24 24">
+                        <path
+                            d="M4 3a1 1 0 000 2h16a1 1 0 100-2H4zm0 6a1 1 0 000 2h10a1 1 0 100-2H4zm0 6a1 1 0 000 2h7a1 1 0 100-2H4zm0 6a1 1 0 000 2h4a1 1 0 100-2H4z" />
+                    </svg>
+                    <h2 class="text-[#139B82] font-semibold text-lg">Edit Profil Desa</h2>
+                </div>
+                <form class="flex flex-col gap-3">
+                    <input type="text" placeholder="Nama Desa"
+                        class="bg-white px-3 py-2 rounded shadow-sm border border-gray-300 focus:outline-none focus:ring-2 focus:ring-emerald-400">
+                    <input type="text" placeholder="Kecamatan"
+                        class="bg-white px-3 py-2 rounded shadow-sm border border-gray-300 focus:outline-none focus:ring-2 focus:ring-emerald-400">
+                    <textarea placeholder="Visi" rows="3"
+                        class="bg-white px-3 py-2 rounded shadow-sm border border-gray-300 focus:outline-none focus:ring-2 focus:ring-emerald-400"></textarea>
+                    <textarea placeholder="Misi" rows="3"
+                        class="bg-white px-3 py-2 rounded shadow-sm border border-gray-300 focus:outline-none focus:ring-2 focus:ring-emerald-400"></textarea>
+                    <button type="submit"
+                        class="bg-[#139B82] text-white py-2 rounded shadow hover:bg-emerald-800 transition">Simpan
+                        Perubahan</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <footer class="flex w-screen h-[10vh] items-start justify-between bg-[#139B82] px-[10vw] pt-5">
+        <div class="mt-1">
+            <a class="flex items-center gap-1" href="">
+                <img class="h-7 -mt-1" src="https://img.icons8.com/pastel-glyph/64/FFFFFF/marker--v1.png"
+                    alt="marker--v1" />
+            </a>
+        </div>
+        <div class="flex gap-2 mt-1">
+            <a href=""><img src="https://img.icons8.com/?size=25&id=118466&format=png&color=FFFFFF" alt=""></a>
+            <a href=""><img src="https://img.icons8.com/?size=25&id=85088&format=png&color=FFFFFF" alt=""></a>
+            <a href=""><img src="https://img.icons8.com/?size=25&id=32309&format=png&color=FFFFFF" alt=""></a>
+        </div>
+    </footer>
+</body>
+
+</html>
