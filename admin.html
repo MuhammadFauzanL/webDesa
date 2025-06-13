@@ -6,9 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Panel</title>
     <link href="/src/style.css" rel="stylesheet">
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
 </head>
 
-<body class="bg-gray-100 min-h-screen flex flex-col items-center">
+<body class="bg-gray-100 flex flex-col items-center">
     <header
         class="flex items-center justify-between md:px-[8vw] px-[3vw] bg-gray-50 h-14 text-black shadow-sm fixed top-0 left-0 w-full z-50">
         <div class="logo">
@@ -29,7 +31,7 @@
         </nav>
     </header>
 
-    <div class="flex flex-col gap-5 h-[90vh]">
+    <div class="flex flex-col gap-5 pb-10">
         <div class="pl-5 pt-28">
             <h4 class="text-2xl text-[#139B82] font-semibold">Admin Panel</h4>
         </div>
@@ -84,6 +86,128 @@
             </div>
         </div>
     </div>
+    <div class=" text-sm w-full px-[8vw] py-10 bg-white" x-data="{
+      statusFilter: '',
+      searchQuery: '',
+      data: [
+        { nama: 'Irsyad', alamat: 'Jl. Raya Cibiru No.45', barang: 'Kursi Plastik (2 unit)', pinjam: '15 Des 2024', kembali: '22 Des 2025', status: 'Dipinjam' },
+        { nama: 'Lubada', alamat: 'Jl. Raya Cibiru No.20', barang: 'Tenda Pesta (5 unit)', pinjam: '17 Des 2024', kembali: '25 Des 2023', status: 'Dikembalikan' },
+        { nama: 'Tralalelo Tralala', alamat: 'Jl. Raya Cipadung No.2', barang: 'Proyektor', pinjam: '20 Des 2024', kembali: '20 April 2025', status: 'Terlambat' },
+        { nama: 'Tung tung tung sahur', alamat: 'Jl. Raya Cipadung No.2', barang: 'Proyektor', pinjam: '20 Des 2024', kembali: '20 April 2025', status: 'Terlambat' },
+        { nama: 'Bombargini gusini', alamat: 'Jl. Raya Cipadung No.2', barang: 'Proyektor', pinjam: '20 Des 2024', kembali: '20 April 2025', status: 'Terlambat' },
+      ]
+    }">
+
+        <h1 class="text-green-700 text-xl font-bold mb-6">Daftar Peminjaman</h1>
+
+        <!-- Statistik -->
+        <div class="grid grid-cols-4 gap-4 mb-8">
+            <div class="bg-white shadow rounded p-4 flex justify-between items-center">
+                <div>
+                    <p class="text-gray-500 text-sm">Total Peminjaman</p>
+                    <p class="text-lg font-bold">127</p>
+                </div>
+                <div>
+                    <img src="https://img.icons8.com/material-rounded/24/4CAF50/grid-2.png" alt="icon" />
+                </div>
+            </div>
+            <div class="bg-white shadow rounded p-4 flex justify-between items-center">
+                <div>
+                    <p class="text-gray-500 text-sm">Sedang Dipinjam</p>
+                    <p class="text-lg font-bold text-orange-600">23</p>
+                </div>
+                <img src="https://img.icons8.com/ios-filled/24/FF9800/clock--v1.png" alt="clock" />
+            </div>
+            <div class="bg-white shadow rounded p-4 flex justify-between items-center">
+                <div>
+                    <p class="text-gray-500 text-sm">Dikembalikan</p>
+                    <p class="text-lg font-bold text-green-600">104</p>
+                </div>
+                <img src="https://img.icons8.com/material-sharp/24/4CAF50/checkmark.png" alt="check" />
+            </div>
+            <div class="bg-white shadow rounded p-4 flex justify-between items-center">
+                <div>
+                    <p class="text-gray-500 text-sm">Terlambat</p>
+                    <p class="text-lg font-bold text-red-600">3</p>
+                </div>
+                <img src="https://img.icons8.com/color/24/FA5252/error--v1.png" alt="warning" />
+            </div>
+        </div>
+
+        <!-- Filter dan Pencarian -->
+        <div class="flex justify-between mb-4">
+            <input type="text" placeholder="Cari Peminjam..." x-model="searchQuery"
+                class="border px-4 py-2 rounded w-1/3" />
+            <select x-model="statusFilter" class="border px-4 py-2 rounded">
+                <option value="">Semua Status</option>
+                <option value="Dipinjam">Dipinjam</option>
+                <option value="Dikembalikan">Dikembalikan</option>
+                <option value="Terlambat">Terlambat</option>
+            </select>
+        </div>
+
+        <!-- Tabel -->
+        <div class="bg-white shadow rounded border overflow-x-auto">
+            <table class="min-w-full table-auto ">
+                <thead class="bg-gray-100">
+                    <tr class="">
+                        <th class="p-3 text-left">Nama Peminjam</th>
+                        <th class="p-3 text-left">Alamat</th>
+                        <th class="p-3 text-left">Barang</th>
+                        <th class="p-3 text-left">Tanggal Pinjam</th>
+                        <th class="p-3 text-left">Tanggal Kembali</th>
+                        <th class="p-3 text-left">Status</th>
+                        <th class="p-3 text-left">Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <template
+                        x-for="item in data.filter(d => (!statusFilter || d.status === statusFilter) && d.nama.toLowerCase().includes(searchQuery.toLowerCase()))">
+                        <tr class="">
+                            <td class="p-3 flex items-center gap-2">
+                                <img src="https://i.pravatar.cc/30?img=12" class="rounded-full w-8 h-8" />
+                                <span x-text="item.nama"></span>
+                            </td>
+                            <td class="p-3" x-text="item.alamat"></td>
+                            <td class="p-3" x-text="item.barang"></td>
+                            <td class="p-3" x-text="item.pinjam"></td>
+                            <td class="p-3" x-text="item.kembali"></td>
+                            <td class="p-3">
+                                <span :class="{
+                    'text-orange-600 font-semibold': item.status === 'Dipinjam',
+                    'text-green-600 font-semibold': item.status === 'Dikembalikan',
+                    'text-red-600 font-semibold': item.status === 'Terlambat'
+                  }" x-text="item.status"></span>
+                            </td>
+                            <td class="p-3 flex gap-2">
+                                <button><img src="https://img.icons8.com/ios-glyphs/20/4CAF50/edit.png"
+                                        alt="edit"></button>
+                                <button><img src="https://img.icons8.com/ios-glyphs/20/FA5252/trash.png"
+                                        alt="delete"></button>
+                            </td>
+                        </tr>
+                    </template>
+                </tbody>
+            </table>
+            <div class="flex justify-between p-5 ">
+                <div class="text-sm text-gray-500">Menampilkan 1-3 dari 127 data</div>
+                <!-- Pagination -->
+                <div class="flex justify-center mt-4 gap-2 pr-15">
+                    <button class="px-3 py-1 border rounded-xl">&lt;</button>
+                    <button class="px-3 py-1 border rounded-xl bg-gray-200">1</button>
+                    <button class="px-3 py-1 border rounded-xl">2</button>
+                    <button class="px-3 py-1 border rounded-xl">3</button>
+                    <button class="px-3 py-1 border rounded-xl">&gt;</button>
+                </div>
+            </div>
+
+        </div>
+
+
+
+    </div>
+
+
 
     <footer class="flex w-screen h-[10vh] items-start justify-between bg-[#139B82] px-[10vw] pt-5">
         <div class="mt-1">
