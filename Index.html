@@ -1,37 +1,104 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>WebDesa-profil</title>
     <link href="/src/style.css" rel="stylesheet">
     <style>
-        
+
     </style>
 </head>
+
 <body class="">
-    <header class="flex items-center justify-between md:px-[8vw] px-[3vw] bg-gray-50  h-14 text-black shadow-sm fixed top-0 left-0 w-full z-50">
+    <header
+        class="flex items-center justify-between md:px-[8vw] px-[3vw] bg-gray-50  h-14 text-black shadow-sm fixed top-0 left-0 w-full z-50">
         <div class="logo">
             <a class="flex items-center gap-1" href="">
-                <img class="h-7 -mt-1" src="https://img.icons8.com/pastel-glyph/64/40C057/marker--v1.png" alt="marker--v1"/>
+                <img class="h-7 -mt-1" src="https://img.icons8.com/pastel-glyph/64/40C057/marker--v1.png"
+                    alt="marker--v1" />
                 <span class="text-sm font-bold">Desa Cibiru</span>
             </a>
         </div>
         <nav>
-            <ul class="flex font-medium items-center gap-2 [&>li>a]:px-3 [&>li>a]:py-1 [&>li>a:hover]:outline-emerald-500 [&>li>a]:rounded-lg">
+            <ul
+                class="flex font-medium items-center gap-2 [&>li>a]:px-3 [&>li>a]:py-1 [&>li>a:hover]:outline-emerald-500 [&>li>a]:rounded-lg">
                 <li><a href="index.html" class="outline-2 outline-emerald-400 bg-emerald-100">Profil</a></li>
                 <li><a href="berita.html" class="hover:outline-2">Berita</a></li>
                 <li><a href="layanan.html" class="hover:outline-2">Layanan</a></li>
+                <li><a href="login.html" class="hover:outline-2">Login</a></li>
+                <li><a href="artikel.html" class="hover:outline-2">Artikel</a></li>
                 <li><a href="admin.html" class="hover:outline-2">Admin Panel</a>
             </ul>
         </nav>
     </header>
-   <div class="flex w-[100vw] h-screen items-center justify-center border-2 md:px-[8vw] px-[3vw]">
-        <div class="box-content w-[50vw] h-[60vh] p-4 my-20 mx-5 rounded-3xl shadow-xl/10">
+    <div class="flex w-[100vw] h-screen items-center justify-center border-2 md:px-[8vw] px-[3vw]">
+        <!-- <div class="box-content w-[50vw] h-[60vh] p-4 my-20 mx-5 rounded-3xl shadow-xl/10">
             profil
+        </div> -->
+        <div class="bg-white p-6 rounded-xl shadow-md max-w-3xl mx-auto font-sans">
+            <div class="flex items-start gap-4">
+                <!-- Foto -->
+                <img src="src/main.jpg" alt="Foto Desa" class="w-16 h-16 rounded-full object-cover">
+
+                <!-- Info Desa -->
+                <div>
+                    <h2 class="text-lg font-semibold text-teal-700">Desa Cibiru</h2>
+                    <p class="text-sm text-gray-600">Kecamatan Cibiru, Kota Bandung</p>
+                    <button class="mt-1 text-white bg-teal-700 text-xs px-3 py-1 rounded-md">Sistem Informasi
+                        Desa</button>
+                </div>
+            </div>
+
+            <!-- Konten Bawah -->
+            <div class="mt-6 grid md:grid-cols-2 gap-4">
+                <!-- Visi dan Misi -->
+                <div>
+                    <h3 class="font-semibold text-gray-700">Visi</h3>
+                    <p class="text-sm italic text-gray-600 mt-1">“Menjadi desa yang maju, mandiri, berbudaya, berbasis
+                        pelayanan prima dan teknologi informasi”</p>
+
+                    <h3 class="mt-4 font-semibold text-gray-700">Misi</h3>
+                    <ul class="text-sm text-gray-600 list-disc list-inside mt-1 space-y-1">
+                        <li>Mewujudkan tata kelola pemerintahan yang baik dan bersih</li>
+                        <li>Meningkatkan kualitas SDM masyarakat desa</li>
+                        <li>Mendorong inovasi layanan publik berbasis digital</li>
+                        <li>Memperkuat ekonomi lokal</li>
+                    </ul>
+                </div>
+
+                <!-- Statistik -->
+                <div>
+                    <h3 class="font-semibold text-gray-700">Statistik</h3>
+                    <div class="grid grid-cols-2 gap-x-6 gap-y-2 text-sm text-gray-700 mt-2">
+                        <div><span class="font-semibold">2,45 Km²</span><br><span class="text-gray-500">Luas
+                                wilayah</span></div>
+                        <div><span class="font-semibold">14</span><br><span class="text-gray-500">RW</span></div>
+                        <div><span class="font-semibold">60</span><br><span class="text-gray-500">RT</span></div>
+                        <div><span class="font-semibold">8,200</span><br><span class="text-gray-500">Penduduk</span>
+                        </div>
+                        <div class="col-span-2 flex items-center gap-2 mt-2">
+                            <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M12 8c.885 0 1.725.194 2.48.54m0 0A5.978 5.978 0 0118 12m-3.52-3.46A5.978 5.978 0 0112 6m0 0a5.978 5.978 0 00-2.48.54M12 6a5.978 5.978 0 00-2.48.54m0 0A5.978 5.978 0 006 12m3.52-3.46A5.978 5.978 0 0012 6z" />
+                            </svg>
+                            <span class="text-gray-700 text-sm">Ketinggian 725 mdpl</span>
+                        </div>
+                        <div class="col-span-2 flex items-center gap-2">
+                            <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M12 2C6.486 2 2 6.486 2 12c0 3.879 2.438 7.204 5.841 8.48a1 1 0 00.775-.014l2.3-1.012a1 1 0 01.768 0l2.3 1.012a1 1 0 00.775.014C19.562 19.204 22 15.879 22 12c0-5.514-4.486-10-10-10z" />
+                            </svg>
+                            <span class="text-gray-700 text-sm">Kode Pos 40615</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
+
         <div class="box-content w-[30vw] h-[40vh] p-4 m-10 rounded-3xl shadow-xl/10">
-            map
+            <img src="src/petaCibiru.png" alt="" class="w-full h-full">
         </div>
     </div>
 
