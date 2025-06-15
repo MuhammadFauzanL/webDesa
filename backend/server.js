@@ -1,22 +1,20 @@
 const express = require('express');
 const dotenv = require('dotenv');
 const cors = require('cors');
-const path = require('path'); // PENTING: Pastikan baris ini ada
+const path = require('path');
 const connectDB = require('./config/db');
 
-// --- PERBAIKAN UTAMA ADA DI SINI ---
-// Baris ini memberi tahu dotenv untuk mencari file .env satu tingkat di atas direktori saat ini (yaitu di folder root 'WebDesa')
+// Memuat .env dari direktori root proyek
 dotenv.config({ path: path.resolve(__dirname, '../.env') });
-// ------------------------------------
 
-// Panggil connectDB SETELAH dotenv dikonfigurasi
+// Menghubungkan ke DB setelah .env dimuat
 connectDB();
 
 const app = express();
 app.use(cors());
 app.use(express.json());
 
-// Buat folder 'public' menjadi statis agar gambar bisa diakses
+// Membuat folder 'public' menjadi statis agar gambar bisa diakses
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.get('/', (req, res) => res.send('API Desa Cibiru Berjalan...'));

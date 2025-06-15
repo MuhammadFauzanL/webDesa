@@ -1,135 +1,111 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Panel</title>
-    <link href="/src/style.css" rel="stylesheet">
-    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
-    <script src="/src/auth.js" defer></script>
-    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
-    <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel</title>
+    <link href="/src/style.css" rel="stylesheet">
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script src="/src/auth.js" defer></script>
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+    <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
 </head>
 <body class="bg-gray-100">
-    <header x-data="navState" x-init="init()" class="flex items-center justify-between md:px-[8vw] px-[3vw] bg-white h-14 text-black shadow-sm fixed top-0 left-0 w-full z-50">
-        <div class="logo"><a class="flex items-center gap-1" href="index.html"><img class="h-7 -mt-1" src="https://img.icons8.com/pastel-glyph/64/40C057/marker--v1.png" alt="marker--v1" /><span class="text-lg font-bold">Desa Cibiru</span></a></div>
-        <nav>
-            <ul class="flex font-medium items-center gap-4">
-                <li><a href="index.html" class="hover:text-emerald-600">Profil</a></li>
-                <li><a href="berita.html" class="hover:text-emerald-600">Berita</a></li>
-                <li><a href="layanan.html" class="hover:text-emerald-600">Layanan</a></li>
-                <template x-if="isAdmin"><li><a href="admin.html" class="font-semibold text-red-600 hover:text-red-700">Admin Panel</a></li></template>
-                <template x-if="isLoggedIn"><li><button @click="logout()" class="bg-gray-200 text-sm font-semibold px-4 py-1.5 rounded-md hover:bg-red-500 hover:text-white transition">Logout</button></li></template>
-                <template x-if="!isLoggedIn"><li><a href="login.html" class="bg-emerald-600 text-sm font-semibold text-white px-4 py-1.5 rounded-md hover:bg-emerald-700">Login</a></li></template>
-            </ul>
-        </nav>
-    </header>
- 
-    <main class="container mx-auto px-4 sm:px-6 lg:px-8 py-8 pt-24">
-        <h1 class="text-3xl text-[#139B82] font-semibold mb-8">Admin Panel</h1>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-10">
-            <div class="bg-white p-6 rounded-2xl shadow-lg" x-data="uploadBerita()" x-init="initEditor()"><h2 class="text-gray-800 font-semibold text-xl mb-4">Upload Berita</h2><form @submit.prevent="submit" class="flex flex-col gap-4"><input type="text" placeholder="Judul Berita" x-model="judul" required class="bg-gray-50 px-3 py-2 rounded-md border border-gray-300 w-full"><input type="date" x-model="tanggal" required class="bg-gray-50 px-3 py-2 rounded-md border border-gray-300 w-full"><div class="text-sm font-medium text-gray-700">Isi Berita</div><div x-ref="editor" class="bg-white h-40 rounded-md border border-gray-300"></div><label class="text-sm font-medium text-gray-700">Upload Gambar Thumbnail</label><input type="file" x-ref="gambarInput" accept="image/*" required class="text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-emerald-50 file:text-emerald-700 hover:file:bg-emerald-100"><button type="submit" class="bg-[#139B82] text-white py-2 rounded-md shadow hover:bg-emerald-700 transition w-full">Upload Berita</button></form></div>
-            <div class="bg-white p-6 rounded-2xl shadow-lg" x-data="profilDesaApp()" x-init="loadProfil()"><h2 class="text-gray-800 font-semibold text-xl mb-4">Edit Profil Desa</h2><form @submit.prevent="simpanProfil" class="flex flex-col gap-4"><input type="text" placeholder="Nama Desa" x-model="profil.namaDesa" class="bg-gray-50 px-3 py-2 rounded-md border border-gray-300 w-full"><input type="text" placeholder="Kecamatan" x-model="profil.kecamatan" class="bg-gray-50 px-3 py-2 rounded-md border border-gray-300 w-full"><textarea placeholder="Visi" rows="3" x-model="profil.visi" class="bg-gray-50 px-3 py-2 rounded-md border border-gray-300 w-full"></textarea><textarea placeholder="Misi (pisahkan per baris)" rows="3" x-model="profil.misi" class="bg-gray-50 px-3 py-2 rounded-md border border-gray-300 w-full"></textarea><button type="submit" class="bg-[#139B82] text-white py-2 rounded-md shadow hover:bg-emerald-700 transition w-full">Simpan Perubahan</button></form></div>
-        </div>
-        <div class="bg-white p-6 rounded-2xl shadow-lg" x-data="dataManagement()" x-init="init()">
-            <h2 class="text-gray-800 font-semibold text-xl mb-4">Manajemen Data</h2>
-            <div x-show="berita.length > 0" class="mb-8">
-                <h3 class="font-semibold text-gray-700 mb-2">Daftar Berita</h3>
-                <div class="overflow-x-auto"><table class="min-w-full table-auto text-sm"><thead><tr class="bg-gray-100"><th class="p-2 text-left">Judul</th><th class="p-2 text-left">Tanggal</th><th class="p-2 text-left">Aksi</th></tr></thead><tbody><template x-for="item in berita" :key="item._id"><tr class="border-t"><td class="p-2" x-text="item.judul"></td><td class="p-2" x-text="new Date(item.tanggal).toLocaleDateString('id-ID')"></td><td class="p-2"><button @click="deleteBerita(item._id)" class="text-xs bg-red-500 text-white px-2 py-1 rounded-md hover:bg-red-600">Hapus</button></td></tr></template></tbody></table></div>
-            </div>
-            <div x-show="peminjaman.length > 0" class="mb-8">
-                <h3 class="font-semibold text-gray-700 mb-2">Daftar Peminjaman</h3>
-                <div class="overflow-x-auto"><table class="min-w-full table-auto text-sm"><thead><tr class="bg-gray-100"><th class="p-2 text-left">Nama</th><th class="p-2 text-left">Barang</th><th class="p-2 text-left">Status</th><th class="p-2 text-left">Aksi</th></tr></thead><tbody><template x-for="item in peminjaman" :key="item._id"><tr class="border-t"><td class="p-2" x-text="item.nama"></td><td class="p-2" x-text="item.barang"></td><td class="p-2"><span class="px-2 py-1 text-xs rounded-full font-semibold" :class="{'bg-yellow-100 text-yellow-800': item.status === 'Diajukan','bg-blue-100 text-blue-800': item.status === 'Dipinjam','bg-green-100 text-green-800': item.status === 'Dikembalikan','bg-red-100 text-red-800': item.status === 'Ditolak'}" x-text="item.status"></span></td><td class="p-2"><select @change="updatePeminjamanStatus(item._id, $event.target.value)" class="border border-gray-300 rounded-md text-xs p-1 bg-white"><option :selected="item.status === 'Diajukan'" value="Diajukan">Diajukan</option><option :selected="item.status === 'Dipinjam'" value="Dipinjam">Disetujui</option><option :selected="item.status === 'Dikembalikan'" value="Dikembalikan">Dikembalikan</option><option :selected="item.status === 'Ditolak'" value="Ditolak">Ditolak</option></select></td></tr></template></tbody></table></div>
-            </div>
-        </div>
-    </main>
+    <header x-data="navState" x-init="init()" class="flex items-center justify-between md:px-[8vw] px-[3vw] bg-white h-14 text-black shadow-sm fixed top-0 left-0 w-full z-50">
+        </header>
+
+    <main class="container mx-auto px-4 sm:px-6 lg:px-8 py-8 pt-24">
+        </main>
+
 <script type="module">
     import { API_URL } from './src/config.js';
 
-    window.getAuthHeader = function() { return { 'Authorization': `Bearer ${localStorage.getItem('token')}` }; }
-    window.checkAdmin = function() { if (localStorage.getItem('userRole') !== 'admin') { alert('Akses ditolak.'); window.location.href = 'login.html'; } }
-    checkAdmin();
+    function getAuthHeader() { return { 'Authorization': `Bearer ${localStorage.getItem('token')}` }; }
+    function checkAdmin() { if (localStorage.getItem('userRole') !== 'admin') { alert('Akses ditolak.'); window.location.href = 'login.html'; } }
+    checkAdmin();
 
-    window.uploadBerita = function() {
-        return {
-            judul: '',
-            tanggal: '',
-            quill: null,
-            initEditor() { this.quill = new Quill(this.$refs.editor, { theme: 'snow', placeholder: 'Tulis isi berita...' }); },
-            async submit() {
-                const isiHTML = this.quill.root.innerHTML;
-                const gambarFile = this.$refs.gambarInput.files[0];
-                if (!this.judul || !this.tanggal || !isiHTML || !gambarFile) { alert("Harap lengkapi semua field."); return; }
-                const formData = new FormData();
-                formData.append('judul', this.judul);
-                formData.append('tanggal', this.tanggal);
-                formData.append('isi', isiHTML);
-                formData.append('gambar', gambarFile);
-                try {
-                    const response = await fetch(`${API_URL}/api/berita`, { method: 'POST', headers: getAuthHeader(), body: formData });
-                    if (!response.ok) throw new Error((await response.json()).message || 'Gagal upload berita');
-                    alert('Berita berhasil diupload!');
-                    window.location.reload();
-                } catch (error) { alert(error.message); }
-            }
-        }
+    function uploadBerita() { 
+        return { 
+            judul: '', tanggal: '', quill: null, 
+            initEditor() { this.quill = new Quill(this.$refs.editor, { theme: 'snow', placeholder: 'Tulis isi berita...' }); }, 
+            async submit() { 
+                const isiHTML = this.quill.root.innerHTML; 
+                const gambarFile = this.$refs.gambarInput.files[0]; 
+                if (!this.judul || !this.tanggal || !isiHTML || !gambarFile) { alert("Harap lengkapi semua field."); return; } 
+                const formData = new FormData(); 
+                formData.append('judul', this.judul); 
+                formData.append('tanggal', this.tanggal); 
+                formData.append('isi', isiHTML); 
+                formData.append('gambar', gambarFile); 
+                try { 
+                    const response = await fetch(`${API_URL}/api/berita`, { method: 'POST', headers: getAuthHeader(), body: formData }); 
+                    if (!response.ok) throw new Error((await response.json()).message || 'Gagal upload berita'); 
+                    alert('Berita berhasil diupload!'); 
+                    window.location.reload(); 
+                } catch (error) { alert(error.message); } 
+            } 
+        } 
     }
 
-    window.profilDesaApp = function() {
+    function profilDesaApp() { 
+        return { 
+            profil: {}, 
+            async loadProfil() { 
+                try { 
+                    const response = await fetch(`${API_URL}/api/profil`); 
+                    if (!response.ok) throw new Error('Gagal memuat profil'); 
+                    this.profil = await response.json(); 
+                } catch (error) { alert(error.message); } 
+            }, 
+            async simpanProfil() { 
+                try { 
+                    const response = await fetch(`${API_URL}/api/profil`, { method: 'PUT', headers: { ...getAuthHeader(), 'Content-Type': 'application/json' }, body: JSON.stringify(this.profil) }); 
+                    if (!response.ok) throw new Error((await response.json()).message || 'Gagal menyimpan'); 
+                    alert('Profil desa berhasil diperbarui!'); 
+                } catch (error) { alert(error.message); } 
+            } 
+        } 
+    }
+
+    function dataManagement() {
         return {
-            profil: {},
-            async loadProfil() {
+            berita: [],
+            peminjaman: [],
+            async init() {
                 try {
-                    const response = await fetch(`${API_URL}/api/profil`);
-                    if (!response.ok) throw new Error('Gagal memuat profil');
-                    this.profil = await response.json();
+                    const [beritaRes, peminjamanRes] = await Promise.all([
+                        fetch(`${API_URL}/api/berita`, { headers: getAuthHeader() }),
+                        fetch(`${API_URL}/api/peminjaman`, { headers: getAuthHeader() })
+                    ]);
+                    if (!beritaRes.ok) throw new Error('Gagal memuat berita');
+                    if (!peminjamanRes.ok) throw new Error('Gagal memuat peminjaman');
+                    this.berita = await beritaRes.json();
+                    this.peminjaman = await peminjamanRes.json();
+                } catch (error) { console.error(error); alert(error.message) }
+            },
+            async deleteBerita(id) {
+                if (!confirm('Apakah Anda yakin ingin menghapus berita ini?')) return;
+                try {
+                    const response = await fetch(`${API_URL}/api/berita/${id}`, { method: 'DELETE', headers: getAuthHeader() });
+                    if (!response.ok) throw new Error((await response.json()).message || 'Gagal menghapus berita');
+                    alert('Berita berhasil dihapus.');
+                    this.init();
                 } catch (error) { alert(error.message); }
             },
-            async simpanProfil() {
+            async updatePeminjamanStatus(id, newStatus) {
                 try {
-                    const response = await fetch(`${API_URL}/api/profil`, { method: 'PUT', headers: { ...getAuthHeader(), 'Content-Type': 'application/json' }, body: JSON.stringify(this.profil) });
-                    if (!response.ok) throw new Error((await response.json()).message || 'Gagal menyimpan');
-                    alert('Profil desa berhasil diperbarui!');
+                    const response = await fetch(`${API_URL}/api/peminjaman/${id}`, { method: 'PUT', headers: { ...getAuthHeader(), 'Content-Type': 'application/json' }, body: JSON.stringify({ status: newStatus }) });
+                    if (!response.ok) throw new Error('Gagal update status');
+                    alert('Status peminjaman berhasil diupdate.');
+                    this.init();
                 } catch (error) { alert(error.message); }
             }
         }
     }
 
-    window.dataManagement = function() {
-        return {
-            berita: [],
-            peminjaman: [],
-            async init() {
-                try {
-                    const [beritaRes, peminjamanRes] = await Promise.all([
-                        fetch(`${API_URL}/api/berita`, { headers: getAuthHeader() }),
-                        fetch(`${API_URL}/api/peminjaman`, { headers: getAuthHeader() })
-                    ]);
-                    if (!beritaRes.ok) throw new Error('Gagal memuat berita');
-                    if (!peminjamanRes.ok) throw new Error('Gagal memuat peminjaman');
-                    this.berita = await beritaRes.json();
-                    this.peminjaman = await peminjamanRes.json();
-                } catch (error) { console.error(error); alert(error.message) }
-            },
-            async deleteBerita(id) {
-                if (!confirm('Apakah Anda yakin ingin menghapus berita ini?')) return;
-                try {
-                    const response = await fetch(`${API_URL}/api/berita/${id}`, { method: 'DELETE', headers: getAuthHeader() });
-                    if (!response.ok) throw new Error((await response.json()).message || 'Gagal menghapus berita');
-                    alert('Berita berhasil dihapus.');
-                    window.location.reload();
-                } catch (error) { alert(error.message); }
-            },
-            async updatePeminjamanStatus(id, newStatus) {
-                try {
-                    const response = await fetch(`${API_URL}/api/peminjaman/${id}`, { method: 'PUT', headers: { ...getAuthHeader(), 'Content-Type': 'application/json' }, body: JSON.stringify({ status: newStatus }) });
-                    if (!response.ok) throw new Error('Gagal update status');
-                    alert('Status peminjaman berhasil diupdate.');
-                    window.location.reload();
-                } catch (error) { alert(error.message); }
-            }
-        }
-    }
+    window.uploadBerita = uploadBerita;
+    window.profilDesaApp = profilDesaApp;
+    window.dataManagement = dataManagement;
 </script>
 </body>
 </html>
