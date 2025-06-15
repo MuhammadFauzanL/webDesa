@@ -18,6 +18,15 @@ app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.get('/', (req, res) => res.send('API Desa Cibiru Berjalan...'));
+
+// =======================================================
+// PERBAIKAN: Tambahkan route untuk registrasi user di sini
+// Ini akan menangani permintaan dari form registrasi Anda.
+// Pastikan Anda sudah memiliki file 'routes/users.js'
+// =======================================================
+app.use('/api/users', require('./routes/users'));
+
+// Route yang sudah ada sebelumnya
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api/berita', require('./routes/berita'));
 app.use('/api/profil', require('./routes/profile'));

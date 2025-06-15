@@ -2,43 +2,63 @@ const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const User = require('../models/User');
+const { check, validationResult } = require('express-validator');
 
-router.post('/register', async (req, res) => {
-    const { email, password } = req.body;
-    try {
-        let user = await User.findOne({ email });
-        if (user) {
-            return res.status(400).json({ message: 'Email sudah terdaftar' });
-        }
-        user = new User({ email, password });
-        const salt = await bcrypt.genSalt(10);
-        user.password = await bcrypt.hash(password, salt);
-        await user.save();
-        res.status(201).json({ message: 'Registrasi berhasil!' });
-    } catch (err) {
-        res.status(500).send('Server error');
+// Pastikan path ke model User sudah benar
+const User = require('../models/User'); 
+
+// @route   POST api/auth
+// @desc    Autentikasi user & dapatkan token (menggunakan email)
+// @access  Public
+router.post('/', [
+    // Validasi diubah untuk email
+    check('email', 'Harap masukkan email yang valid').isEmail(),
+    check('password', 'Password harus diisi').exists()
+], async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
     }
-});
 
-router.post('/login', async (req, res) => {
+    // Menggunakan email, bukan NIK
     const { email, password } = req.body;
+
     try {
+        // Cek user berdasarkan email
         let user = await User.findOne({ email });
+
         if (!user) {
-            return res.status(400).json({ message: 'Email atau password salah' });
+            return res.status(400).json({ errors: [{ msg: 'Email atau password salah' }] });
         }
+
+        // Bandingkan password
         const isMatch = await bcrypt.compare(password, user.password);
+
         if (!isMatch) {
-            return res.status(400).json({ message: 'Email atau password salah' });
+            return res.status(400).json({ errors: [{ msg: 'Email atau password salah' }] });
         }
-        const payload = { user: { id: user.id, role: user.role } };
-        jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '5h' }, (err, token) => {
-            if (err) throw err;
-            res.json({ token, role: user.role });
-        });
+
+        // Buat token
+        const payload = {
+            user: {
+                id: user.id,
+                role: user.role
+            }
+        };
+
+        jwt.sign(
+            payload,
+            process.env.JWT_SECRET,
+            { expiresIn: '1h' }, // Token berlaku 1 jam
+            (err, token) => {
+                if (err) throw err;
+                res.json({ token });
+            }
+        );
+
     } catch (err) {
-        res.status(500).send('Server error');
+        console.error('Login Error:', err.message);
+        res.status(500).json({ errors: [{ msg: 'Terjadi kesalahan pada server' }] });
     }
 });
 
