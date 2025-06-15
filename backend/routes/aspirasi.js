@@ -1,64 +1,50 @@
-
 const express = require('express');
-const { auth, isAdmin } = require('../middleware/auth');
-const Aspirasi = require('../models/Aspirasi');
-
-// Membuat instance router
 const router = express.Router();
 
+// Impor model Aspirasi Anda
+// Pastikan path-nya benar, mungkin ../models/Aspirasi
+const Aspirasi = require('../models/Aspirasi');
+
 // @route   POST api/aspirasi
-// @desc    Warga mengirim aspirasi baru dengan logging detail
+// @desc    Membuat aspirasi baru
+// @access  Public
 router.post('/', async (req, res) => {
-    console.log('--- [1] MENERIMA REQUEST POST KE /api/aspirasi ---');
-    console.log('Isi Body Request:', req.body);
+  // Cek data yang masuk dari body request
+  const { nama, aspirasi } = req.body;
 
-    const { nama, aspirasi } = req.body;
-    try {
-        console.log('--- [2] Masuk ke blok TRY. Membuat dokumen baru...');
-        const aspirasiBaru = new Aspirasi({ nama, aspirasi });
-        console.log('--- [3] Dokumen dibuat. Mencoba menyimpan ke database...');
+  // Validasi sederhana
+  if (!nama || !aspirasi) {
+    return res.status(400).json({ msg: 'Nama dan isi aspirasi tidak boleh kosong' });
+  }
 
-        await aspirasiBaru.save();
+  try {
+    const aspirasiBaru = new Aspirasi({
+      nama,
+      aspirasi,
+    });
 
-        // Jika kode sampai ke sini, artinya .save() berhasil tanpa error
-        console.log('--- [4] SUKSES menyimpan ke database! Mengirim respons ke frontend.');
-        res.status(201).json({ message: 'Aspirasi Anda telah terkirim. Terima kasih!' });
+    // Simpan ke database
+    const dataTersimpan = await aspirasiBaru.save();
 
-    } catch (err) {
-        // Jika ada error APAPUN di dalam blok TRY, kode akan masuk ke sini
-        console.error('--- [X] TERJADI ERROR SAAT MENYIMPAN! ---');
-        console.error('Pesan Error Detail:', err); // Menggunakan console.error(err) untuk detail lengkap
-        res.status(500).send('Server Error: Gagal menyimpan data.');
-    }
+    console.log('Data aspirasi berhasil disimpan:', dataTersimpan);
+    res.status(201).json(dataTersimpan);
+
+  } catch (err) {
+    console.error('Server Error saat menyimpan aspirasi:', err.message);
+    res.status(500).send('Server Error');
+  }
+});
+
+// Anda juga bisa menambahkan route GET untuk mengambil semua aspirasi
+router.get('/', async (req, res) => {
+  try {
+    const semuaAspirasi = await Aspirasi.find().sort({ tanggal: -1 });
+    res.json(semuaAspirasi);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error');
+  }
 });
 
 
-// @route   GET api/aspirasi
-// @desc    Admin mendapatkan semua aspirasi
-router.get('/', [auth, isAdmin], async (req, res) => {
-    try {
-        const semuaAspirasi = await Aspirasi.find().sort({ createdAt: -1 });
-        res.json(semuaAspirasi);
-    } catch (err) {
-        res.status(500).send('Server Error');
-    }
-});
-
-// @route   PUT api/aspirasi/:id
-// @desc    Admin menanggapi aspirasi
-router.put('/:id', [auth, isAdmin], async (req, res) => {
-    const { tanggapan } = req.body;
-    try {
-        const aspirasi = await Aspirasi.findByIdAndUpdate(
-            req.params.id,
-            { $set: { tanggapan, status: 'Sudah Ditanggapi' } },
-            { new: true }
-        );
-        res.json(aspirasi);
-    } catch (err) {
-        res.status(500).send('Server Error');
-    }
-});
-
-// Mengekspor router agar bisa digunakan di server.js
 module.exports = router;
