@@ -5,8 +5,6 @@ const upload = require('../middleware/upload');
 const Berita = require('../models/Berita');
 const User = require('../models/User');
 
-// @route   POST api/berita
-// @desc    Buat berita baru (Admin)
 router.post('/', [auth, isAdmin, upload], async (req, res) => {
     const { judul, tanggal, isi } = req.body;
     
@@ -19,7 +17,7 @@ router.post('/', [auth, isAdmin, upload], async (req, res) => {
             judul,
             tanggal,
             isi,
-            gambar: `/uploads/${req.file.filename}`, // Simpan path gambar
+            gambar: `/uploads/${req.file.filename}`, 
             penulis: req.user.id
         });
 
@@ -32,8 +30,6 @@ router.post('/', [auth, isAdmin, upload], async (req, res) => {
     }
 });
 
-// @route   GET api/berita
-// @desc    Dapatkan semua berita (Publik)
 router.get('/', async (req, res) => {
     try {
         const allBerita = await Berita.find().sort({ tanggal: -1 });
@@ -44,8 +40,7 @@ router.get('/', async (req, res) => {
     }
 });
 
-// @route   GET api/berita/:id
-// @desc    Dapatkan satu berita (Publik)
+
 router.get('/:id', async (req, res) => {
     try {
         const berita = await Berita.findById(req.params.id);
@@ -59,9 +54,6 @@ router.get('/:id', async (req, res) => {
     }
 });
 
-
-// @route   DELETE api/berita/:id
-// @desc    Hapus berita (Admin)
 router.delete('/:id', [auth, isAdmin], async (req, res) => {
     try {
         let berita = await Berita.findById(req.params.id);

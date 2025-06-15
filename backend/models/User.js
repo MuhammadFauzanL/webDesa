@@ -1,11 +1,11 @@
 const mongoose = require('mongoose');
 
 const UserSchema = new mongoose.Schema({
-    // Menghapus field nama dan NIK sesuai permintaan
+    
     email: {
         type: String,
         required: true,
-        unique: true // Pastikan setiap email hanya bisa mendaftar sekali
+        unique: true 
     },
     password: {
         type: String,
@@ -13,7 +13,7 @@ const UserSchema = new mongoose.Schema({
     },
     role: {
         type: String,
-        default: 'warga' // Role default untuk user yang mendaftar
+        default: 'warga' 
     },
     date: {
         type: Date,

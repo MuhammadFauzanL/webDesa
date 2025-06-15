@@ -4,29 +4,21 @@ const cors = require('cors');
 const path = require('path');
 const connectDB = require('./config/db');
 
-// Memuat .env dari direktori root proyek
 dotenv.config({ path: path.resolve(__dirname, '../.env') });
 
-// Menghubungkan ke DB setelah .env dimuat
+
 connectDB();
 
 const app = express();
 app.use(cors());
 app.use(express.json());
-
-// Membuat folder 'public' menjadi statis agar gambar bisa diakses
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.get('/', (req, res) => res.send('API Desa Cibiru Berjalan...'));
 
-// =======================================================
-// PERBAIKAN: Tambahkan route untuk registrasi user di sini
-// Ini akan menangani permintaan dari form registrasi Anda.
-// Pastikan Anda sudah memiliki file 'routes/users.js'
-// =======================================================
 app.use('/api/users', require('./routes/users'));
 
-// Route yang sudah ada sebelumnya
+
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api/berita', require('./routes/berita'));
 app.use('/api/profil', require('./routes/profile'));

@@ -1,6 +1,4 @@
 const jwt = require('jsonwebtoken');
-
-// Middleware untuk memeriksa token secara umum
 const auth = (req, res, next) => {
     const token = req.header('Authorization')?.replace('Bearer ', '');
     if (!token) {

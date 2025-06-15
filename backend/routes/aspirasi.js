@@ -23,7 +23,7 @@ router.post('/', async (req, res) => {
       aspirasi,
     });
 
-    // Simpan ke database
+    
     const dataTersimpan = await aspirasiBaru.save();
 
     console.log('Data aspirasi berhasil disimpan:', dataTersimpan);
@@ -35,7 +35,7 @@ router.post('/', async (req, res) => {
   }
 });
 
-// Anda juga bisa menambahkan route GET untuk mengambil semua aspirasi
+
 router.get('/', async (req, res) => {
   try {
     const semuaAspirasi = await Aspirasi.find().sort({ tanggal: -1 });

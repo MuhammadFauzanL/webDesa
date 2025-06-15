@@ -19,10 +19,9 @@
     </style>
 </head>
 
-<!-- Logika Alpine.js ditambahkan di body -->
-<body class="bg-gray-100 h-full" x-data="authApp" x-init="init()">
+<body class="bg-gray-100 h-full" x-data="authApp">
 
-    <!-- HEADER dengan Navbar Dinamis -->
+    <!-- HEADER (Sama seperti halaman lain) -->
     <header class="flex items-center justify-between md:px-[8vw] px-[3vw] bg-white h-14 text-black shadow-sm fixed top-0 left-0 w-full z-50">
         <div class="logo">
             <a class="flex items-center gap-1" href="/">
@@ -35,22 +34,12 @@
                 <li><a href="/" class="hover:text-emerald-600">Profil</a></li>
                 <li><a href="/berita.html" class="hover:text-emerald-600">Berita</a></li>
                 <li><a href="/layanan.html" class="hover:text-emerald-600">Layanan</a></li>
-                
-                <template x-if="isAdmin">
-                    <li><a href="/admin-dashboard.html" class="font-semibold text-red-600 hover:text-red-700">Admin Panel</a></li>
-                </template>
-                
-                <template x-if="!isLoggedIn">
-                    <li><a href="/login.html" class="bg-emerald-600 text-white font-semibold px-4 py-2 rounded-lg hover:bg-emerald-700">Login</a></li>
-                </template>
-                <template x-if="isLoggedIn">
-                    <li><button @click="logout()" class="bg-red-500 text-white font-semibold px-4 py-2 rounded-lg hover:bg-red-600">Logout</button></li>
-                </template>
+                <li><a href="/login.html" class="font-semibold text-emerald-600">Login</a></li>
             </ul>
         </nav>
     </header>
 
-    <!-- Tampilan dua kolom sesuai keinginan Anda -->
+ 
     <main class="flex flex-row h-screen w-screen pt-14" x-cloak>
         <!-- Kolom Gambar -->
         <div class="hidden md:block w-3/5 h-full">
@@ -63,7 +52,7 @@
         <div class="w-full md:w-2/5 h-full flex items-center justify-center p-6 md:px-12 bg-white overflow-auto">
             <div class="w-full max-w-sm">
 
-                <!-- Template Login -->
+                <!-- Template Login (Diubah menggunakan Email) -->
                 <template x-if="mode === 'login'">
                     <div>
                         <h2 class="text-2xl font-bold text-[#139B82] mb-6 text-center">Masuk Akun Warga</h2>
@@ -90,7 +79,7 @@
                     </div>
                 </template>
 
-                <!-- Template Registrasi -->
+                <!-- Template Registrasi (Diubah hanya menggunakan Email & Password) -->
                 <template x-if="mode === 'register'">
                     <div>
                         <h2 class="text-2xl font-bold text-[#139B82] mb-6 text-center">Registrasi Akun Warga</h2>
@@ -116,13 +105,16 @@
                         </form>
                     </div>
                 </template>
+
             </div>
         </div>
     </main>
     
     <footer class="flex fixed bottom-0 left-0 w-full h-14 items-center justify-between bg-[#139B82] px-[8vw]">
         <div class="logo">
-            <a class="flex items-center gap-1" href="/"><img class="h-7 -mt-1" src="https://img.icons8.com/pastel-glyph/64/FFFFFF/marker--v1.png" alt="marker--v1" /></a>
+            <a class="flex items-center gap-1" href="/">
+                <img class="h-7 -mt-1" src="https://img.icons8.com/pastel-glyph/64/FFFFFF/marker--v1.png" alt="marker--v1" />
+            </a>
         </div>
         <div class="flex gap-4 items-center">
             <a href="#"><img src="https://img.icons8.com/?size=25&id=118466&format=png&color=FFFFFF" alt="Facebook"></a>
@@ -131,21 +123,10 @@
         </div>
     </footer>
 
-    <!-- SCRIPT GABUNGAN UNTUK SEMUA FUNGSI -->
-    <script>
-        function decodeJwt(token) {
-            try {
-                return JSON.parse(atob(token.split('.')[1]));
-            } catch (e) {
-                return null;
-            }
-        }
 
+    <script>
         document.addEventListener('alpine:init', () => {
             Alpine.data('authApp', () => ({
-                // State untuk Navbar dan Form digabung di sini
-                isLoggedIn: false,
-                isAdmin: false,
                 mode: 'login', 
                 message: '',
                 messageType: '', 
@@ -154,29 +135,6 @@
                 registerEmail: '',
                 registerPassword: '',
 
-                init() {
-                    const token = localStorage.getItem('token');
-                    if (token) {
-                        const decodedToken = decodeJwt(token);
-                        if (decodedToken && decodedToken.exp * 1000 > Date.now()) {
-                            this.isLoggedIn = true;
-                            if (decodedToken.user && decodedToken.user.role === 'admin') {
-                                this.isAdmin = true;
-                            }
-                        } else {
-                            localStorage.removeItem('token');
-                        }
-                    }
-                },
-
-                logout() {
-                    localStorage.removeItem('token');
-                    this.isLoggedIn = false;
-                    this.isAdmin = false;
-                    alert('Anda telah berhasil logout.');
-                    window.location.href = '/login.html';
-                },
-                
                 showMessage(type, text) {
                     this.messageType = type;
                     this.message = text;
@@ -201,14 +159,7 @@
 
                         this.showMessage('success', 'Login berhasil! Anda akan dialihkan...');
                         localStorage.setItem('token', data.token);
-                        setTimeout(() => { 
-                            const decoded = decodeJwt(data.token);
-                            if (decoded && decoded.user && decoded.user.role === 'admin') {
-                                window.location.href = '/admin-dashboard.html';
-                            } else {
-                                window.location.href = '/'; 
-                            }
-                        }, 1500);
+                        setTimeout(() => { window.location.href = '/admin-dashboard.html'; }, 1500);
 
                     } catch (error) {
                         this.showMessage('error', error.message);

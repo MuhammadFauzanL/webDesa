@@ -1,10 +1,8 @@
 const express = require('express');
 const router = express.Router();
-const { auth, isAdmin } = require('../middleware/auth'); // Nanti kita bisa gunakan auth saja untuk warga
+const { auth, isAdmin } = require('../middleware/auth'); 
 const Peminjaman = require('../models/Peminjaman');
 
-// @route   POST api/peminjaman
-// @desc    Warga mengajukan peminjaman (Perlu login)
 router.post('/', auth, async (req, res) => {
     const { nama, barang, keperluan, tanggalPinjam } = req.body;
     try {
@@ -16,8 +14,6 @@ router.post('/', auth, async (req, res) => {
     }
 });
 
-// @route   GET api/peminjaman
-// @desc    Admin mendapatkan semua data peminjaman
 router.get('/', [auth, isAdmin], async (req, res) => {
     try {
         const semuaPeminjaman = await Peminjaman.find().sort({ createdAt: -1 });
@@ -27,8 +23,6 @@ router.get('/', [auth, isAdmin], async (req, res) => {
     }
 });
 
-// @route   PUT api/peminjaman/:id
-// @desc    Admin mengubah status peminjaman
 router.put('/:id', [auth, isAdmin], async (req, res) => {
     const { status, tanggalKembali } = req.body;
     try {
