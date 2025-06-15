@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebDesa - Profil</title>
+    <link href="/src/style.css" rel="stylesheet">
+    <script src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+    <script src="/src/auth.js" defer></script>
+</head>
+
+<body class="bg-gray-50" x-data="halamanProfil()" x-init="loadData()">
+    
+    <header x-data="navState" x-init="init()" class="flex items-center justify-between md:px-[8vw] px-[3vw] bg-white h-14 text-black shadow-sm fixed top-0 left-0 w-full z-50">
+        <div class="logo">
+            <a class="flex items-center gap-1" href="index.html">
+                <img class="h-7 -mt-1" src="https://img.icons8.com/pastel-glyph/64/40C057/marker--v1.png" alt="marker--v1" />
+                <span class="text-lg font-bold" x-text="profil.namaDesa || 'Desa Cibiru'">Desa Cibiru</span>
+            </a>
+        </div>
+        <nav>
+            <ul class="flex font-medium items-center gap-4">
+                <li><a href="index.html" class="font-semibold text-emerald-600">Profil</a></li>
+                <li><a href="berita.html" class="hover:text-emerald-600">Berita</a></li>
+                <li><a href="layanan.html" class="hover:text-emerald-600">Layanan</a></li>
+                
+                <template x-if="isAdmin">
+                    <li><a href="admin.html" class="font-semibold text-red-600 hover:text-red-700">Admin Panel</a></li>
+                </template>
+                <template x-if="isLoggedIn">
+                    <li><button @click="logout()" class="bg-gray-200 text-sm font-semibold px-4 py-1.5 rounded-md hover:bg-red-500 hover:text-white transition">Logout</button></li>
+                </template>
+                <template x-if="!isLoggedIn">
+                    <li><a href="login.html" class="bg-emerald-600 text-sm font-semibold text-white px-4 py-1.5 rounded-md hover:bg-emerald-700">Login</a></li>
+                </template>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="flex w-full min-h-screen items-center justify-center pt-14 md:px-[8vw] px-[3vw]">
+        <div class="flex flex-col md:flex-row w-full max-w-6xl items-center justify-center gap-10">
+            <div class="bg-white p-6 rounded-xl shadow-md max-w-3xl font-sans w-full md:w-2/3">
+                <div class="flex items-start gap-4">
+                    <img src="/src/main.jpg" alt="Foto Desa" class="w-20 h-20 rounded-lg object-cover">
+                    <div>
+                        <h2 class="text-2xl font-bold text-teal-700" x-text="profil.namaDesa">Memuat...</h2>
+                        <p class="text-md text-gray-600" x-text="profil.kecamatan"></p>
+                    </div>
+                </div>
+                <div class="mt-6 grid md:grid-cols-2 gap-6">
+                    <div>
+                        <h3 class="font-semibold text-gray-800 text-lg">Visi</h3>
+                        <p class="text-sm italic text-gray-600 mt-1" x-text="profil.visi"></p>
+                        <h3 class="mt-4 font-semibold text-gray-800 text-lg">Misi</h3>
+                        <ul class="text-sm text-gray-600 list-disc list-inside mt-1 space-y-1" x-html="formatMisi(profil.misi)"></ul>
+                    </div>
+                    <div>
+                        <h3 class="font-semibold text-gray-800 text-lg">Statistik</h3>
+                        <div class="grid grid-cols-2 gap-4 text-sm text-gray-700 mt-2">
+                            <div><span class="font-semibold">2,45 Km²</span><br><span class="text-gray-500">Luas wilayah</span></div>
+                            <div><span class="font-semibold">14</span><br><span class="text-gray-500">RW</span></div>
+                            <div><span class="font-semibold">60</span><br><span class="text-gray-500">RT</span></div>
+                            <div><span class="font-semibold">8,200</span><br><span class="text-gray-500">Penduduk</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="w-full md:w-1/3">
+                <img src="/src/petaCibiru.png" alt="Peta Desa Cibiru" class="w-full h-auto rounded-xl shadow-md object-contain">
+            </div>
+        </div>
+    </main>
+
+    <script type="module">
+        // Mengimpor URL API dari file konfigurasi terpusat
+        import { API_URL } from './src/config.js';
+
+        function halamanProfil() {
+            return {
+                profil: { namaDesa: 'Memuat...', kecamatan: '', visi: '', misi: '' },
+                
+                async loadData() {
+                    try {
+                        // Menggunakan variabel API_URL untuk mengambil data
+                        const response = await fetch(`${API_URL}/api/profil`);
+                        if (!response.ok) throw new Error('Gagal memuat profil desa');
+                        this.profil = await response.json();
+                    } catch (error) {
+                        console.error(error);
+                        this.profil.namaDesa = "Gagal Memuat Data"; 
+                    }
+                },
+                
+                formatMisi(misiText) {
+                    if (!misiText) return '';
+                    return misiText.split('\n').map(line => `<li>${line}</li>`).join('');
+                }
+            }
+        }
+
+        // PERBAIKAN PENTING:
+        // Karena kita menggunakan `type="module"`, fungsi `halamanProfil` perlu
+        // diekspos ke 'window' agar bisa ditemukan oleh `x-data` di HTML.
+        window.halamanProfil = halamanProfil;
+    </script>
+</body>
+</html>

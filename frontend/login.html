@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="id" class="h-full">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login & Registrasi</title>
+    <link href="/src/style.css" rel="stylesheet">
+    <script src="https://unpkg.com/alpinejs" defer></script>
+    <script src="/src/auth.js" defer></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-100 h-full" x-data="authApp">
+
+    <header x-data="navState" x-init="init()" class="flex items-center justify-between md:px-[8vw] px-[3vw] bg-white h-14 text-black shadow-sm fixed top-0 left-0 w-full z-50">
+        <div class="logo">
+            <a class="flex items-center gap-1" href="index.html">
+                <img class="h-7 -mt-1" src="https://img.icons8.com/pastel-glyph/64/40C057/marker--v1.png" alt="marker--v1" />
+                <span class="text-lg font-bold">Desa Cibiru</span>
+            </a>
+        </div>
+        <nav>
+            <ul class="flex font-medium items-center gap-2 [&>li>a]:px-3 [&>li>a]:py-1 [&>li>a:hover]:text-emerald-600 [&>li>a]:font-semibold">
+                <li><a href="index.html">Profil</a></li>
+                <li><a href="berita.html">Berita</a></li>
+                <li><a href="layanan.html">Layanan</a></li>
+                <template x-if="isAdmin">
+                    <li><a href="admin.html" class="text-red-600">Admin Panel</a></li>
+                </template>
+                <template x-if="isLoggedIn">
+                    <li><button @click="logout()" class="bg-gray-200 px-3 py-1 rounded-md hover:bg-red-500 hover:text-white transition">Logout</button></li>
+                </template>
+                <template x-if="!isLoggedIn">
+                    <li><a href="login.html" class="bg-emerald-500 text-white px-3 py-1 rounded-md hover:bg-emerald-600">Login</a></li>
+                </template>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="flex flex-row h-screen w-screen pt-14">
+        <div class="w-3/5 h-full">
+            <div class="bg-amber-600 h-full w-full">
+                <img class="w-full h-full object-cover" src="src/main.jpg" alt="Desa Cibiru" />
+            </div>
+        </div>
+
+        <div class="w-2/5 h-full pt-20 px-10 bg-white overflow-auto">
+            <template x-if="mode === 'login'">
+                <div>
+                    <h2 class="text-2xl font-bold text-[#139B82] mb-6 text-center">Masuk Akun Warga</h2>
+                    <form @submit.prevent="login" class="space-y-5">
+                        <label class="block text-gray-700 pl-3 text-xl">Log in</label>
+                        <div>
+                            <input type="email" x-model="loginEmail" required class="w-full h-[52px] p-3 pl-5 rounded-lg bg-[#F0EDFFCC] font-medium text-sm" placeholder="Email" />
+                        </div>
+                        <div>
+                            <input type="password" x-model="loginPassword" required class="w-full h-[52px] p-3 pl-5 rounded-lg bg-[#F0EDFFCC] font-medium text-sm" placeholder="Password" />
+                        </div>
+                        <button type="submit" class="w-full h-[50px] bg-[#139B82] text-white p-2 rounded-lg hover:bg-emerald-700 transition">Login Now</button>
+                        <p class="text-sm text-center mt-4 text-gray-600">
+                            Belum punya akun?
+                            <button type="button" @click="mode = 'register'" class="text-[#139B82] hover:underline font-semibold">Daftar</button>
+                        </p>
+                    </form>
+                </div>
+            </template>
+            <template x-if="mode === 'register'">
+                <div>
+                    <h2 class="text-2xl font-bold text-[#139B82] mb-6 text-center">Registrasi</h2>
+                    <form @submit.prevent="register" class="space-y-5">
+                        <label class="block text-gray-700 pl-3 text-xl">Daftar</label>
+                        <div>
+                            <input type="email" x-model="registerEmail" required class="w-full h-[52px] p-3 pl-5 rounded-lg bg-[#F0EDFFCC] font-medium text-sm" placeholder="Email" />
+                        </div>
+                        <div>
+                            <input type="password" x-model="registerPassword" required class="w-full h-[52px] p-3 pl-5 rounded-lg bg-[#F0EDFFCC] font-medium text-sm" placeholder="Password" />
+                        </div>
+                        <button type="submit" class="w-full h-[50px] bg-[#139B82] text-white p-2 rounded-lg hover:bg-emerald-700 transition">Daftar Sekarang</button>
+                        <p class="text-sm text-center mt-4 text-gray-600">
+                            Sudah punya akun?
+                            <button type="button" @click="mode = 'login'" class="text-[#139B82] hover:underline font-semibold">Login</button>
+                        </p>
+                    </form>
+                </div>
+            </template>
+        </div>
+    </div>
+
+    <script type="module">
+        import { API_URL } from './src/config.js';
+
+        document.addEventListener('alpine:init', () => {
+            Alpine.data('authApp', () => ({
+                mode: 'login',
+                loginEmail: '',
+                loginPassword: '',
+                registerEmail: '',
+                registerPassword: '',
+
+                async login() {
+                    if (!this.loginEmail || !this.loginPassword) {
+                        alert('Harap isi email dan password.');
+                        return;
+                    }
+                    try {
+                        const response = await fetch(`${API_URL}/api/auth/login`, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ email: this.loginEmail, password: this.loginPassword }),
+                        });
+                        const data = await response.json();
+                        if (!response.ok) {
+                            alert(data.message || 'Login gagal.');
+                            return;
+                        }
+                        localStorage.setItem('token', data.token);
+                        localStorage.setItem('userRole', data.role);
+                        alert('Login berhasil!');
+                        window.location.href = data.role === 'admin' ? 'admin.html' : 'index.html';
+                    } catch (error) {
+                        alert('Tidak dapat terhubung ke server backend.');
+                    }
+                },
+
+                async register() {
+                    if (!this.registerEmail || !this.registerPassword) {
+                        alert('Isi semua field untuk registrasi.');
+                        return;
+                    }
+                    try {
+                        const response = await fetch(`${API_URL}/api/auth/register`, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ email: this.registerEmail, password: this.registerPassword }),
+                        });
+                        const data = await response.json();
+                        if (!response.ok) {
+                            alert(data.message || 'Registrasi gagal.');
+                            return;
+                        }
+                        alert('Registrasi berhasil! Silakan login.');
+                        this.mode = 'login';
+                        this.registerEmail = '';
+                        this.registerPassword = '';
+                    } catch(error) {
+                        alert('Tidak dapat terhubung ke server backend.');
+                    }
+                }
+            }));
+        });
+    </script>
+</body>
+</html>
