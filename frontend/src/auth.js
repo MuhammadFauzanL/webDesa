@@ -1,4 +1,3 @@
-
 function decodeJwt(token) {
     try {
         // Mengambil bagian payload (tengah), lalu di-decode dari Base64
@@ -10,17 +9,19 @@ function decodeJwt(token) {
 }
 
 document.addEventListener('alpine:init', () => {
-   
+    // Komponen Alpine.js ini akan mengontrol semua status yang berhubungan dengan autentikasi
     Alpine.data('authController', () => ({
         // State untuk Navbar
         isLoggedIn: false,
         isAdmin: false,
+
+        // Fungsi yang berjalan otomatis saat halaman dimuat
         init() {
             console.log('Auth controller initialized.');
             const token = localStorage.getItem('token');
             if (token) {
                 const decodedToken = decodeJwt(token);
-                
+                // Cek apakah token ada dan belum kedaluwarsa
                 if (decodedToken && decodedToken.exp * 1000 > Date.now()) {
                     this.isLoggedIn = true;
                     // Cek apakah pengguna memiliki role 'admin'
