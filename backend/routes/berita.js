@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const { auth, isAdmin } = require('../middleware/auth');
 const upload = require('../middleware/upload');
-const Berita = require('../models/Berita');
+const Berita = require('../models/berita');
 const User = require('../models/User');
 
 router.post('/', [auth, isAdmin, upload], async (req, res) => {
@@ -26,7 +26,7 @@ router.post('/', [auth, isAdmin, upload], async (req, res) => {
 
     } catch (err) {
         console.error(err.message);
-        res.status(500).send('Server Error');
+        res.status(500).json({ msg: 'Server Error saat membuat berita' }); // Ubah di sini
     }
 });
 
@@ -36,10 +36,9 @@ router.get('/', async (req, res) => {
         res.json(allBerita);
     } catch (err) {
         console.error(err.message);
-        res.status(500).send('Server Error');
+        res.status(500).json({ msg: 'Server Error saat mengambil semua berita' }); // Ubah di sini
     }
 });
-
 
 router.get('/:id', async (req, res) => {
     try {
@@ -50,7 +49,7 @@ router.get('/:id', async (req, res) => {
         res.json(berita);
     } catch (err) {
         console.error(err.message);
-        res.status(500).send('Server Error');
+        res.status(500).json({ msg: 'Server Error saat mengambil berita berdasarkan ID' }); // Ubah di sini
     }
 });
 
@@ -64,9 +63,8 @@ router.delete('/:id', [auth, isAdmin], async (req, res) => {
         res.json({ message: 'Berita berhasil dihapus' });
     } catch (err) {
         console.error(err.message);
-        res.status(500).send('Server Error');
+        res.status(500).json({ msg: 'Server Error saat menghapus berita' }); // Ubah di sini
     }
 });
-
 
 module.exports = router;

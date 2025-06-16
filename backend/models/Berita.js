@@ -8,4 +8,4 @@ const BeritaSchema = new mongoose.Schema({
     penulis: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true } 
 }, { timestamps: true });
 
-module.exports = mongoose.model('Berita', BeritaSchema);
+module.exports = mongoose.model('berita', BeritaSchema);

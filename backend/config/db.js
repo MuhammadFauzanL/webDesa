@@ -1,3 +1,4 @@
+// backend/config/db.js
 const mongoose = require('mongoose');
 
 const connectDB = async () => {
@@ -7,10 +8,8 @@ const connectDB = async () => {
       process.exit(1);
     }
 
-    await mongoose.connect(process.env.MONGO_URI, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
+    // Hapus opsi deprecated
+    await mongoose.connect(process.env.MONGO_URI);
 
     console.log('MongoDB Connected...');
   } catch (err) {
@@ -20,3 +19,8 @@ const connectDB = async () => {
 };
 
 module.exports = connectDB;
+
+
+
+
+
