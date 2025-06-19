@@ -24,6 +24,7 @@
                 <li><a href="berita.html" class="hover:text-emerald-600">Berita</a></li>
                 <li><a href="layanan.html" class="hover:text-emerald-600">Layanan</a></li>
                  <li><a href="/login.html" class="hover:text-emerald-600">Login</a></li>
+                 <li id="admin-menu" style="display: none;"><a href="admin.html" class="text-white hover:text-gray-300">Admin</a></li>
                 <template x-if="isAdmin">
                     <li><a href="admin.html" class="font-semibold text-red-600 hover:text-red-700">Admin Panel</a></li>
                 </template>
@@ -72,7 +73,6 @@
     </main>
 
     <script type="module">
-        // Mengimpor URL API dari file konfigurasi terpusat
         import { API_URL } from './src/config.js';
 
         function halamanProfil() {
@@ -101,5 +101,6 @@
         
         window.halamanProfil = halamanProfil;
     </script>
+    <script type="module" src="/src/navbar.js"></script>
 </body>
 </html>
