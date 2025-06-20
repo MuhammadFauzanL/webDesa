@@ -6,21 +6,26 @@
     <title>WebDesa - Berita</title>
     <link href="/src/style.css" rel="stylesheet">
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
-    <script src="/src/auth.js" defer></script>
 </head>
-<body class="bg-gray-100" x-data="daftarBerita" x-init="fetchBerita()">
-    <header x-data="navState" x-init="init()" class="flex items-center justify-between md:px-[8vw] px-[3vw] bg-white h-14 text-black shadow-sm fixed top-0 left-0 w-full z-50">
-        <div class="logo"><a class="flex items-center gap-1" href="index.html"><img class="h-7 -mt-1" src="https://img.icons8.com/pastel-glyph/64/40C057/marker--v1.png" alt="marker--v1" /><span class="text-lg font-bold">Desa Cibiru</span></a></div>
+
+<body class="bg-gray-100" x-data="daftarBerita()" x-init="fetchBerita()">
+    
+    <header class="flex items-center justify-between md:px-[8vw] px-[3vw] bg-white h-14 text-black shadow-sm fixed top-0 left-0 w-full z-50">
+        <div class="logo">
+            <a class="flex items-center gap-1" href="index.html">
+                <img class="h-7 -mt-1" src="https://img.icons8.com/pastel-glyph/64/40C057/marker--v1.png" alt="marker--v1" />
+                <span class="text-lg font-bold">Desa Cibiru</span>
+            </a>
+        </div>
         <nav>
-            <ul class="flex font-medium items-center gap-4">
+            <ul id="navbar-links" class="flex font-medium items-center gap-4">
                 <li><a href="index.html" class="hover:text-emerald-600">Profil</a></li>
-                <li><a href="berita.html" class="hover:text-emerald-600 font-semibold text-emerald-600">Berita</a></li>
+                <li><a href="berita.html" class="font-semibold text-emerald-600">Berita</a></li>
                 <li><a href="layanan.html" class="hover:text-emerald-600">Layanan</a></li>
-                 <li><a href="/login.html" class="hover:text-emerald-600">Login</a></li>
-                 <li id="admin-menu" style="display: none;"><a href="admin.html" class="text-white hover:text-gray-300">Admin</a></li>
-                <template x-if="isAdmin"><li><a href="admin.html" class="font-semibold text-red-600 hover:text-red-700">Admin Panel</a></li></template>
-                <template x-if="isLoggedIn"><li><button @click="logout()" class="bg-gray-200 text-sm font-semibold px-4 py-1.5 rounded-md hover:bg-red-500 hover:text-white transition">Logout</button></li></template>
-                <template x-if="!isLoggedIn"><li><a href="login.html" class="bg-emerald-600 text-sm font-semibold text-white px-4 py-1.5 rounded-md hover:bg-emerald-700">Login</a></li></template>
+                
+                <li id="auth-button-container">
+                    <a href="login.html" class="bg-emerald-600 text-sm font-semibold text-white px-4 py-1.5 rounded-md hover:bg-emerald-700">Login</a>
+                </li>
             </ul>
         </nav>
     </header>
@@ -32,7 +37,7 @@
                 <template x-if="berita.length === 0"><p class="col-span-full text-center text-gray-500">Belum ada berita yang dipublikasikan.</p></template>
                 <template x-for="item in berita" :key="item._id">
                     <div class="bg-white rounded-2xl shadow-md flex flex-col overflow-hidden">
-                        <a :href="`artikel.html?id=${item._id}`"><img class="w-full h-48 object-cover" :src="`${API_URL}${item.gambar}`" :alt="item.judul" /></a>
+                        <a :href="`artikel.html?id=${item._id}`"><img class="w-full h-48 object-cover" :src="`http://localhost:5000${item.gambar}`" :alt="item.judul" /></a>
                         <div class="p-5 flex flex-col flex-grow">
                             <div class="flex items-center gap-2 text-sm text-emerald-700 mb-2">
                                 <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd" /></svg>
@@ -49,26 +54,82 @@
     </main>
     <footer class="bg-[#139B82] text-white py-4 text-center text-sm">© 2025 Desa Cibiru - All rights reserved.</footer>
 
-<script type="module">
-    import { API_URL } from './src/config.js';
+    <script type="module">
+        // Import fungsi logout dari auth.js
+        import { logout } from './src/auth.js';
 
-    function daftarBerita() {
-        return {
-            berita: [],
-            API_URL: API_URL, // Menyediakan API_URL ke template
-            async fetchBerita() {
-                try {
-                    const response = await fetch(`${API_URL}/api/berita`);
-                    if (!response.ok) throw new Error('Gagal mengambil data berita');
-                    this.berita = await response.json();
-                } catch (error) { 
-                    console.error(error); 
+        // Fungsi untuk mendekode token dan mendapatkan info user
+        function getUserInfo() {
+            const token = localStorage.getItem('token');
+            if (!token) return null;
+            try {
+                const payload = JSON.parse(atob(token.split('.')[1]));
+                // Cek jika token kedaluwarsa
+                if (payload.exp * 1000 < Date.now()) {
+                    localStorage.removeItem('token');
+                    return null;
+                }
+                return payload; // Mengembalikan { user: { role: '...' } }
+            } catch (e) {
+                localStorage.removeItem('token');
+                return null;
+            }
+        }
+
+        // Fungsi utama untuk mengatur tampilan Navbar
+        function setupNavbar() {
+            const authContainer = document.getElementById('auth-button-container');
+            const navbarLinks = document.getElementById('navbar-links');
+            const userInfo = getUserInfo();
+
+            if (!authContainer || !navbarLinks) {
+                console.error("Elemen navbar (auth-button-container atau navbar-links) tidak ditemukan!");
+                return;
+            }
+
+            if (userInfo) {
+                // --- SUDAH LOGIN ---
+                
+                // 1. Buat dan tampilkan tombol Logout
+                authContainer.innerHTML = `
+                    <button id="logout-button" class="bg-gray-200 text-sm font-semibold px-4 py-1.5 rounded-md hover:bg-red-500 hover:text-white transition">
+                        Logout
+                    </button>
+                `;
+
+                // 2. Tambahkan event listener ke tombol Logout
+                document.getElementById('logout-button').addEventListener('click', logout);
+                
+                // 3. Jika user adalah admin, buat dan tambahkan menu Admin
+                if (userInfo.user && userInfo.user.role === 'admin') {
+                    const adminMenuItem = document.createElement('li');
+                    adminMenuItem.innerHTML = `<a href="admin.html" class="font-semibold text-red-600 hover:text-red-700">Admin Panel</a>`;
+                    navbarLinks.insertBefore(adminMenuItem, authContainer);
+                }
+
+            }
+        }
+
+        // Jalankan fungsi ini setelah seluruh HTML selesai dimuat
+        document.addEventListener('DOMContentLoaded', setupNavbar);
+    </script>
+    
+    <script>
+        function daftarBerita() {
+            return {
+                berita: [],
+                async fetchBerita() {
+                    try {
+                        const API_URL = 'http://localhost:5000';
+                        const response = await fetch(`${API_URL}/api/berita`);
+                        if (!response.ok) throw new Error('Gagal mengambil data berita');
+                        this.berita = await response.json();
+                    } catch (error) { 
+                        console.error(error); 
+                    }
                 }
             }
         }
-    }
-    window.daftarBerita = daftarBerita;
-</script>
-<script type="module" src="/src/navbar.js"></script>
+    </script>
 </body>
 </html>

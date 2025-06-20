@@ -19,7 +19,7 @@ router.post('/', async (req, res) => {
 
     const dataTersimpan = await aspirasiBaru.save();
 
-    //console.log('Data aspirasi berhasil disimpan:', dataTersimpan);
+ 
     res.status(201).json(dataTersimpan);
 
   } catch (err) {
