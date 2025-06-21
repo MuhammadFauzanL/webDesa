@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Berita - Admin Panel</title>
+    <link href="/src/style.css" rel="stylesheet">
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+    <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
+</head>
+<body class="bg-gray-100">
+
+    <header class="flex items-center justify-between md:px-[8vw] px-[3vw] bg-white h-14 text-black shadow-sm fixed top-0 left-0 w-full z-50">
+        <div class="logo">
+            <a class="flex items-center gap-1" href="index.html">
+                <img class="h-7 -mt-1" src="https://img.icons8.com/pastel-glyph/64/40C057/marker--v1.png" alt="marker--v1" />
+                <span class="text-lg font-bold">Admin: Edit Berita</span>
+            </a>
+        </div>
+        <nav>
+            <ul id="navbar-links" class="flex font-medium items-center gap-4">
+                <li><a href="admin.html" class="hover:text-emerald-600">Admin Panel</a></li>
+                <li id="auth-button-container">
+                    </li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="container mx-auto px-4 sm:px-6 lg:px-8 py-8 pt-24">
+        <h1 class="text-3xl font-bold text-gray-800 mb-6">Edit Berita</h1>
+
+        <div x-data="editBeritaPanel()" x-init="init()">
+            <div class="bg-white p-6 rounded-lg shadow-md mb-8">
+                <form @submit.prevent="submitUpdate" class="space-y-4">
+                    <div>
+                        <label for="judul" class="block text-sm font-medium text-gray-700">Judul Berita</label>
+                        <input type="text" id="judul" x-model="berita.judul" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500 sm:text-sm">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Gambar Saat Ini</label>
+                        <template x-if="berita.gambar">
+                            <img :src="'http://localhost:5000' + berita.gambar" alt="Gambar saat ini" class="mt-2 rounded-md max-h-48 border">
+                        </template>
+                         <p class="text-xs text-gray-500 mt-2">Upload gambar baru di bawah ini hanya jika Anda ingin menggantinya.</p>
+                    </div>
+                    <div>
+                        <label for="gambar" class="block text-sm font-medium text-gray-700">Ganti Gambar (Opsional)</label>
+                        <input type="file" id="gambar" @change="newImage = $event.target.files[0]" class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-emerald-50 file:text-emerald-700 hover:file:bg-emerald-100">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Isi Berita</label>
+                        <div id="editor-edit" class="mt-1 bg-white" style="min-height: 200px;"></div>
+                    </div>
+                    <div class="flex justify-end space-x-3 pt-4">
+                         <a href="admin.html" class="bg-gray-200 text-gray-700 py-2 px-4 rounded-md hover:bg-gray-300 font-semibold transition">Batal</a>
+                        <button type="submit" class="bg-emerald-600 text-white py-2 px-4 rounded-md hover:bg-emerald-700 font-semibold transition">Simpan Perubahan</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <script type="module">
+        import { logout } from './src/auth.js';
+
+        function getUserInfo() {
+            const token = localStorage.getItem('token');
+            if (!token) return null;
+            try {
+                const payload = JSON.parse(atob(token.split('.')[1]));
+                if (payload.exp * 1000 < Date.now()) {
+                    localStorage.removeItem('token');
+                    return null;
+                }
+                return payload;
+            } catch (e) {
+                localStorage.removeItem('token');
+                return null;
+            }
+        }
+        
+        function checkAdminAccess() {
+            const userInfo = getUserInfo();
+            if (!userInfo || userInfo.user.role !== 'admin') {
+                alert('Akses Ditolak! Halaman ini hanya untuk Admin.');
+                window.location.href = '/index.html';
+            }
+        }
+
+        function setupNavbar() {
+            const authContainer = document.getElementById('auth-button-container');
+            const navbarLinks = document.getElementById('navbar-links');
+            const userInfo = getUserInfo();
+            if (!authContainer || !navbarLinks) return;
+            if (userInfo) {
+                authContainer.innerHTML = `<button id="logout-button" class="bg-gray-200 text-sm font-semibold px-4 py-1.5 rounded-md hover:bg-red-500 hover:text-white transition">Logout</button>`;
+                document.getElementById('logout-button').addEventListener('click', logout);
+                if (userInfo.user && userInfo.user.role === 'admin') {
+                    const adminMenuItem = document.createElement('li');
+                    adminMenuItem.innerHTML = `<a href="admin.html" class="font-semibold text-red-600 hover:text-red-700">Admin Panel</a>`;
+                    navbarLinks.insertBefore(adminMenuItem, authContainer);
+                }
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            checkAdminAccess();
+            setupNavbar();
+        });
+    </script>
+    
+    <script>
+        function editBeritaPanel() {
+            return {
+                beritaId: null,
+                berita: { judul: 'Memuat...', isi: '', gambar: '' },
+                quill: null,
+                newImage: null,
+                init() {
+                    const params = new URLSearchParams(window.location.search);
+                    this.beritaId = params.get('id');
+                    if (!this.beritaId) {
+                        alert('ID Berita tidak ditemukan!');
+                        window.location.href = '/admin.html';
+                        return;
+                    }
+
+                    this.quill = new Quill('#editor-edit', {
+                        theme: 'snow',
+                        placeholder: 'Tulis isi berita di sini...'
+                    });
+                    
+                    this.fetchBeritaDetails();
+                },
+                async fetchBeritaDetails() {
+                    try {
+                        const response = await fetch(`http://localhost:5000/api/berita/${this.beritaId}`);
+                        if (!response.ok) throw new Error('Gagal mengambil detail berita');
+                        const data = await response.json();
+                        this.berita = data;
+                        this.quill.root.innerHTML = data.isi; // Memasukkan isi berita ke editor
+                    } catch (error) {
+                        alert(error.message);
+                    }
+                },
+                async submitUpdate() {
+                    const token = localStorage.getItem('token');
+                    const isiHTML = this.quill.root.innerHTML;
+                    
+                    const formData = new FormData();
+                    formData.append('judul', this.berita.judul);
+                    formData.append('isi', isiHTML);
+                    
+                    // Hanya tambahkan gambar jika ada file baru yang dipilih
+                    if (this.newImage) {
+                        formData.append('gambar', this.newImage);
+                    }
+
+                    try {
+                        const response = await fetch(`http://localhost:5000/api/berita/${this.beritaId}`, {
+                            method: 'PUT',
+                            headers: { 'Authorization': `Bearer ${token}` },
+                            body: formData
+                        });
+
+                        if (!response.ok) {
+                            const errorData = await response.json();
+                            throw new Error(errorData.message || 'Gagal menyimpan perubahan.');
+                        }
+                        
+                        alert('Berita berhasil diperbarui!');
+                        window.location.href = '/admin.html'; // Kembali ke panel admin setelah sukses
+                    } catch (error) {
+                        alert(error.message);
+                    }
+                }
+            }
+        }
+    </script>
+</body>
+</html>

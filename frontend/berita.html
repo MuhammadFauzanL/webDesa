@@ -37,15 +37,15 @@
                 <template x-if="berita.length === 0"><p class="col-span-full text-center text-gray-500">Belum ada berita yang dipublikasikan.</p></template>
                 <template x-for="item in berita" :key="item._id">
                     <div class="bg-white rounded-2xl shadow-md flex flex-col overflow-hidden">
-                        <a :href="`artikel.html?id=${item._id}`"><img class="w-full h-48 object-cover" :src="`http://localhost:5000${item.gambar}`" :alt="item.judul" /></a>
+                        <a :href="`baca-berita.html?id=${item._id}`"><img class="w-full h-48 object-cover" :src="`http://localhost:5000${item.gambar}`" :alt="item.judul" /></a>
                         <div class="p-5 flex flex-col flex-grow">
                             <div class="flex items-center gap-2 text-sm text-emerald-700 mb-2">
                                 <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd" /></svg>
                                 <span x-text="new Date(item.tanggal).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })"></span>
                             </div>
-                            <a :href="`artikel.html?id=${item._id}`"><h2 class="text-lg font-bold tracking-tight text-gray-900" x-text="item.judul"></h2></a>
+                            <a :href="`baca-berita.html?id=${item._id}`"><h2 class="text-lg font-bold tracking-tight text-gray-900" x-text="item.judul"></h2></a>
                             <p class="flex-grow my-3 font-normal text-gray-600 text-sm" x-text="item.isi.replace(/<[^>]+>/g, '').substring(0, 100) + '...'"></p>
-                            <div class="mt-auto"><a :href="`artikel.html?id=${item._id}`" class="inline-flex items-center font-semibold text-emerald-600 hover:text-emerald-800">Baca Selengkapnya<svg class="w-4 h-4 ms-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg></a></div>
+                            <div class="mt-auto"><a :href="`baca-berita.html?id=${item._id}`" class="inline-flex items-center font-semibold text-emerald-600 hover:text-emerald-800">Baca Selengkapnya<svg class="w-4 h-4 ms-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg></a></div>
                         </div>
                     </div>
                 </template>
@@ -55,62 +55,47 @@
     <footer class="bg-[#139B82] text-white py-4 text-center text-sm">© 2025 Desa Cibiru - All rights reserved.</footer>
 
     <script type="module">
-        // Import fungsi logout dari auth.js
         import { logout } from './src/auth.js';
 
-        // Fungsi untuk mendekode token dan mendapatkan info user
         function getUserInfo() {
             const token = localStorage.getItem('token');
             if (!token) return null;
             try {
                 const payload = JSON.parse(atob(token.split('.')[1]));
-                // Cek jika token kedaluwarsa
                 if (payload.exp * 1000 < Date.now()) {
                     localStorage.removeItem('token');
                     return null;
                 }
-                return payload; // Mengembalikan { user: { role: '...' } }
+                return payload;
             } catch (e) {
                 localStorage.removeItem('token');
                 return null;
             }
         }
 
-        // Fungsi utama untuk mengatur tampilan Navbar
         function setupNavbar() {
             const authContainer = document.getElementById('auth-button-container');
             const navbarLinks = document.getElementById('navbar-links');
             const userInfo = getUserInfo();
 
-            if (!authContainer || !navbarLinks) {
-                console.error("Elemen navbar (auth-button-container atau navbar-links) tidak ditemukan!");
-                return;
-            }
+            if (!authContainer || !navbarLinks) return;
 
             if (userInfo) {
-                // --- SUDAH LOGIN ---
-                
-                // 1. Buat dan tampilkan tombol Logout
                 authContainer.innerHTML = `
                     <button id="logout-button" class="bg-gray-200 text-sm font-semibold px-4 py-1.5 rounded-md hover:bg-red-500 hover:text-white transition">
                         Logout
                     </button>
                 `;
-
-                // 2. Tambahkan event listener ke tombol Logout
                 document.getElementById('logout-button').addEventListener('click', logout);
                 
-                // 3. Jika user adalah admin, buat dan tambahkan menu Admin
                 if (userInfo.user && userInfo.user.role === 'admin') {
                     const adminMenuItem = document.createElement('li');
                     adminMenuItem.innerHTML = `<a href="admin.html" class="font-semibold text-red-600 hover:text-red-700">Admin Panel</a>`;
                     navbarLinks.insertBefore(adminMenuItem, authContainer);
                 }
-
             }
         }
 
-        // Jalankan fungsi ini setelah seluruh HTML selesai dimuat
         document.addEventListener('DOMContentLoaded', setupNavbar);
     </script>
     

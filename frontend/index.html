@@ -3,18 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WebDesa - Profil</title>
+    <title>WebDesa - Profil Desa Cibiru</title>
     <link href="/src/style.css" rel="stylesheet">
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
 </head>
 
-<body class="bg-gray-50" x-data="halamanProfil()" x-init="loadData()">
+<body class="bg-gray-50">
     
     <header class="flex items-center justify-between md:px-[8vw] px-[3vw] bg-white h-14 text-black shadow-sm fixed top-0 left-0 w-full z-50">
         <div class="logo">
             <a class="flex items-center gap-1" href="index.html">
                 <img class="h-7 -mt-1" src="https://img.icons8.com/pastel-glyph/64/40C057/marker--v1.png" alt="marker--v1" />
-                <span class="text-lg font-bold" x-text="profil ? profil.namaDesa : 'Desa Cibiru'">Desa Cibiru</span>
+                <span class="text-lg font-bold">Desa Cibiru</span>
             </a>
         </div>
         <nav>
@@ -36,16 +36,21 @@
                 <div class="flex items-start gap-4">
                     <img src="/src/main.jpg" alt="Foto Desa" class="w-20 h-20 rounded-lg object-cover">
                     <div>
-                        <h2 class="text-2xl font-bold text-teal-700" x-text="profil.namaDesa">Memuat...</h2>
-                        <p class="text-md text-gray-600" x-text="profil.kecamatan"></p>
+                        <h2 class="text-2xl font-bold text-teal-700">Desa Cibiru</h2>
+                        <p class="text-md text-gray-600">Kecamatan Cileunyi, Kabupaten Bandung</p>
                     </div>
                 </div>
                 <div class="mt-6 grid md:grid-cols-2 gap-6">
                     <div>
                         <h3 class="font-semibold text-gray-800 text-lg">Visi</h3>
-                        <p class="text-sm italic text-gray-600 mt-1" x-text="profil.visi"></p>
+                        <p class="text-sm italic text-gray-600 mt-1">"Terwujudnya Desa Cibiru yang Maju, Mandiri, dan Sejahtera melalui Pembangunan yang Berkelanjutan dan Berkeadilan"</p>
                         <h3 class="mt-4 font-semibold text-gray-800 text-lg">Misi</h3>
-                        <ul class="text-sm text-gray-600 list-disc list-inside mt-1 space-y-1" x-html="profil.misi ? formatMisi(profil.misi) : ''"></ul>
+                        <ul class="text-sm text-gray-600 list-disc list-inside mt-1 space-y-1">
+                            <li>Meningkatkan kualitas pelayanan publik yang cepat, tepat, dan transparan.</li>
+                            <li>Mengembangkan potensi ekonomi lokal berbasis pertanian dan UMKM.</li>
+                            <li>Meningkatkan kualitas sumber daya manusia melalui pendidikan dan kesehatan.</li>
+                            <li>Mewujudkan pembangunan infrastruktur yang merata dan berkelanjutan.</li>
+                        </ul>
                     </div>
                     <div>
                         <h3 class="font-semibold text-gray-800 text-lg">Statistik</h3>
@@ -63,91 +68,51 @@
             </div>
         </div>
     </main>
-    
+
     <script type="module">
-        // Import fungsi logout dari auth.js
         import { logout } from './src/auth.js';
 
-        // Fungsi untuk mendekode token dan mendapatkan info user
         function getUserInfo() {
             const token = localStorage.getItem('token');
             if (!token) return null;
             try {
                 const payload = JSON.parse(atob(token.split('.')[1]));
-                // Cek jika token kedaluwarsa
                 if (payload.exp * 1000 < Date.now()) {
                     localStorage.removeItem('token');
                     return null;
                 }
-                return payload; // Mengembalikan { user: { role: '...' } }
+                return payload;
             } catch (e) {
                 localStorage.removeItem('token');
                 return null;
             }
         }
 
-        // Fungsi utama untuk mengatur tampilan Navbar
         function setupNavbar() {
             const authContainer = document.getElementById('auth-button-container');
             const navbarLinks = document.getElementById('navbar-links');
             const userInfo = getUserInfo();
 
-            if (!authContainer || !navbarLinks) {
-                console.error("Elemen navbar (auth-button-container atau navbar-links) tidak ditemukan!");
-                return;
-            }
+            if (!authContainer || !navbarLinks) return;
 
             if (userInfo) {
-                // --- SUDAH LOGIN ---
-                
-                // 1. Buat dan tampilkan tombol Logout
                 authContainer.innerHTML = `
                     <button id="logout-button" class="bg-gray-200 text-sm font-semibold px-4 py-1.5 rounded-md hover:bg-red-500 hover:text-white transition">
                         Logout
                     </button>
                 `;
-
-                // 2. Tambahkan event listener ke tombol Logout
                 document.getElementById('logout-button').addEventListener('click', logout);
                 
-                // 3. Jika user adalah admin, buat dan tambahkan menu Admin
                 if (userInfo.user && userInfo.user.role === 'admin') {
                     const adminMenuItem = document.createElement('li');
                     adminMenuItem.innerHTML = `<a href="admin.html" class="font-semibold text-red-600 hover:text-red-700">Admin Panel</a>`;
-                    // Sisipkan menu Admin sebelum container tombol auth
                     navbarLinks.insertBefore(adminMenuItem, authContainer);
                 }
-
-            } else {
-                // --- BELUM LOGIN ---
-                // Tampilan default dari HTML sudah benar (tombol Login), jadi tidak perlu melakukan apa-apa.
             }
         }
 
-        // Jalankan fungsi ini setelah seluruh HTML selesai dimuat
         document.addEventListener('DOMContentLoaded', setupNavbar);
     </script>
-
-    <script>
-        function halamanProfil() {
-            return {
-                profil: { namaDesa: 'Memuat...', kecamatan: '', visi: '', misi: '' },
-                async loadData() {
-                    try {
-                        const response = await fetch(`http://localhost:5000/api/profil`);
-                        if (!response.ok) throw new Error('Gagal memuat profil desa');
-                        this.profil = await response.json();
-                    } catch (error) {
-                        console.error(error);
-                        this.profil = { namaDesa: "Gagal Memuat Data", kecamatan: "" };
-                    }
-                },
-                formatMisi(misiText) {
-                    if (!misiText) return '';
-                    return misiText.split('\n').map(line => `<li>${line}</li>`).join('');
-                }
-            }
-        }
-    </script>
-</body>
+    
+    </body>
 </html>
