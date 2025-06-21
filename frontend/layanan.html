@@ -62,40 +62,28 @@
     <footer class="bg-[#139B82] text-white py-4 text-center text-sm">© 2025 Desa Cibiru - All rights reserved.</footer>
 
     <script type="module">
-        // Import fungsi logout dari auth.js
         import { logout } from './src/auth.js';
-
-        // Fungsi untuk mendekode token dan mendapatkan info user
         function getUserInfo() {
             const token = localStorage.getItem('token');
             if (!token) return null;
             try {
                 const payload = JSON.parse(atob(token.split('.')[1]));
                 if (payload.exp * 1000 < Date.now()) {
-                    localStorage.removeItem('token');
-                    return null;
+                    localStorage.removeItem('token'); return null;
                 }
                 return payload;
             } catch (e) {
-                localStorage.removeItem('token');
-                return null;
+                localStorage.removeItem('token'); return null;
             }
         }
         function setupNavbar() {
             const authContainer = document.getElementById('auth-button-container');
             const navbarLinks = document.getElementById('navbar-links');
             const userInfo = getUserInfo();
-
             if (!authContainer || !navbarLinks) return;
-
             if (userInfo) {
-                authContainer.innerHTML = `
-                    <button id="logout-button" class="bg-gray-200 text-sm font-semibold px-4 py-1.5 rounded-md hover:bg-red-500 hover:text-white transition">
-                        Logout
-                    </button>
-                `;
+                authContainer.innerHTML = `<button id="logout-button" class="bg-gray-200 text-sm font-semibold px-4 py-1.5 rounded-md hover:bg-red-500 hover:text-white transition">Logout</button>`;
                 document.getElementById('logout-button').addEventListener('click', logout);
-                
                 if (userInfo.user && userInfo.user.role === 'admin') {
                     const adminMenuItem = document.createElement('li');
                     adminMenuItem.innerHTML = `<a href="admin.html" class="font-semibold text-red-600 hover:text-red-700">Admin Panel</a>`;
@@ -103,52 +91,61 @@
                 }
             }
         }
+        
         function setupPeminjamanForm() {
             const peminjamanContent = document.getElementById('peminjaman-content');
             const userInfo = getUserInfo();
 
-            if (!peminjamanContent) return;
+            if (!peminjamanContent || !userInfo) return;
 
-            if (userInfo) {
-                peminjamanContent.innerHTML = `
-                    <form id="form-peminjaman" class="space-y-4">
-                        <input type="text" id="peminjaman-nama" placeholder="Nama Pemohon" required class="w-full p-3 rounded-md bg-gray-50 border border-gray-300 text-sm">
-                        <input type="text" id="peminjaman-barang" placeholder="Barang yang Dipinjam (Contoh: Tenda, Kursi)" required class="w-full p-3 rounded-md bg-gray-50 border border-gray-300 text-sm">
-                        <input type="text" id="peminjaman-keperluan" placeholder="Keperluan" required class="w-full p-3 rounded-md bg-gray-50 border border-gray-300 text-sm">
-                        <input type="date" id="peminjaman-tanggal" required class="w-full p-3 rounded-md bg-gray-50 border border-gray-300 text-sm">
-                        <button type="submit" class="w-full bg-[#139B82] text-white py-2 rounded-md hover:bg-emerald-700 font-semibold transition">Ajukan Peminjaman</button>
-                    </form>
-                `;
+            const today = new Date().toISOString().split('T')[0];
+            peminjamanContent.innerHTML = `
+                <form id="form-peminjaman" class="space-y-4">
+                    <input type="text" id="peminjaman-nama" placeholder="Nama Pemohon" required class="w-full p-3 rounded-md bg-gray-50 border border-gray-300 text-sm">
+                    <input type="text" id="peminjaman-barang" placeholder="Barang yang Dipinjam" required class="w-full p-3 rounded-md bg-gray-50 border border-gray-300 text-sm">
+                    <input type="text" id="peminjaman-keperluan" placeholder="Keperluan" required class="w-full p-3 rounded-md bg-gray-50 border border-gray-300 text-sm">
+                    
+                    <div>
+                        <label for="peminjaman-tanggal-pinjam" class="block text-xs font-medium text-gray-600 mb-1">Tanggal Pinjam</label>
+                        <input type="date" id="peminjaman-tanggal-pinjam" required class="w-full p-3 rounded-md bg-gray-50 border border-gray-300 text-sm" min="${today}">
+                    </div>
+                    
+                    <div>
+                        <label for="peminjaman-tanggal-kembali" class="block text-xs font-medium text-gray-600 mb-1">Tanggal Kembali</label>
+                        <input type="date" id="peminjaman-tanggal-kembali" required class="w-full p-3 rounded-md bg-gray-50 border border-gray-300 text-sm" min="${today}">
+                    </div>
 
-                // Tambahkan event listener untuk submit form
-                document.getElementById('form-peminjaman').addEventListener('submit', async (e) => {
-                    e.preventDefault();
-                    const token = localStorage.getItem('token');
-                    const formData = {
-                        nama: document.getElementById('peminjaman-nama').value,
-                        barang: document.getElementById('peminjaman-barang').value,
-                        keperluan: document.getElementById('peminjaman-keperluan').value,
-                        tanggalPinjam: document.getElementById('peminjaman-tanggal').value
-                    };
+                    <button type="submit" class="w-full bg-[#139B82] text-white py-2 rounded-md hover:bg-emerald-700 font-semibold transition">Ajukan Peminjaman</button>
+                </form>
+            `;
 
-                    try {
-                        const response = await fetch('http://localhost:5000/api/peminjaman', {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
-                            body: JSON.stringify(formData)
-                        });
-                        const data = await response.json();
-                        if (!response.ok) throw new Error(data.message || 'Gagal mengajukan peminjaman');
-                        alert('Pengajuan peminjaman Anda telah berhasil dikirim.');
-                        e.target.reset(); // Mengosongkan form
-                    } catch (error) {
-                        alert(error.message);
-                    }
-                });
-            }
+            document.getElementById('form-peminjaman').addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const token = localStorage.getItem('token');
+                const formData = {
+                    nama: document.getElementById('peminjaman-nama').value,
+                    barang: document.getElementById('peminjaman-barang').value,
+                    keperluan: document.getElementById('peminjaman-keperluan').value,
+                    tanggalPinjam: document.getElementById('peminjaman-tanggal-pinjam').value,
+                    tanggalKembali: document.getElementById('peminjaman-tanggal-kembali').value
+                };
+
+                try {
+                    const response = await fetch('http://localhost:5000/api/peminjaman', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+                        body: JSON.stringify(formData)
+                    });
+                    const data = await response.json();
+                    if (!response.ok) throw new Error(data.message || 'Gagal mengajukan peminjaman');
+                    alert('Pengajuan peminjaman Anda telah berhasil dikirim.');
+                    e.target.reset();
+                } catch (error) {
+                    alert(error.message);
+                }
+            });
         }
 
-        // Jalankan semua fungsi setup saat halaman dimuat
         document.addEventListener('DOMContentLoaded', () => {
             setupNavbar();
             setupPeminjamanForm();
@@ -166,8 +163,7 @@
                             headers: { 'Content-Type': 'application/json' },
                             body: JSON.stringify(this.formData)
                         });
-                        const data = await response.json();
-                        if (!response.ok) throw new Error(data.message || 'Gagal mengirim aspirasi');
+                        if (!response.ok) throw new Error((await response.json()).msg || 'Gagal mengirim aspirasi');
                         alert('Terima kasih! Aspirasi Anda telah berhasil dikirim.');
                         this.formData = { nama: '', aspirasi: '' };
                     } catch (error) {

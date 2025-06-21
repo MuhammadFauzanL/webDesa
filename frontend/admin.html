@@ -53,9 +53,9 @@
                     <button type="submit" class="w-full bg-emerald-600 text-white py-2 px-4 rounded-md hover:bg-emerald-700 font-semibold transition">Upload Berita</button>
                 </form>
             </div>
-
+            
             <div class="bg-white p-6 rounded-lg shadow-md mb-8">
-                <h2 class="text-xl font-semibold mb-4">Kelola Berita & Artikel</h2>
+                <h2 class="text-xl font-semibold mb-4">Kelola Berita</h2>
                 <div class="overflow-x-auto">
                     <table class="min-w-full divide-y divide-gray-200">
                         <thead class="bg-gray-50">
@@ -70,50 +70,68 @@
                                 <tr>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900" x-text="item.judul"></td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500" x-text="new Date(item.tanggal).toLocaleDateString('id-ID')"></td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                          <a :href="`edit-berita.html?id=${item._id}`" class="text-emerald-600 hover:text-emerald-900">Edit</a>
+                                    <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium space-x-4">
+                                        <a :href="`edit-berita.html?id=${item._id}`" class="text-emerald-600 hover:text-emerald-900">Edit</a>
                                         <button @click="deleteBerita(item._id)" class="text-red-600 hover:text-red-900">Hapus</button>
                                     </td>
                                 </tr>
                             </template>
                             <template x-if="berita.length === 0">
-                                <tr>
-                                    <td colspan="3" class="px-6 py-4 text-center text-gray-500">Tidak ada berita.</td>
-                                </tr>
+                                <tr><td colspan="3" class="px-6 py-4 text-center text-gray-500">Tidak ada berita.</td></tr>
                             </template>
                         </tbody>
                     </table>
                 </div>
             </div>
-
+            
             <div class="bg-white p-6 rounded-lg shadow-md mb-8">
-                <h2 class="text-xl font-semibold mb-4">Kelola Peminjaman</h2>
+                <h2 class="text-xl font-semibold mb-4">Manajemen Peminjaman Sarana</h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8 text-center">
+                    <div class="p-4 bg-blue-50 rounded-lg">
+                        <h4 class="text-sm font-medium text-blue-600">TOTAL PENGAJUAN</h4>
+                        <p class="text-3xl font-bold text-blue-800" x-text="peminjaman.length"></p>
+                    </div>
+                    <div class="p-4 bg-yellow-50 rounded-lg">
+                        <h4 class="text-sm font-medium text-yellow-600">BARANG DIPINJAM</h4>
+                        <p class="text-3xl font-bold text-yellow-800" x-text="peminjaman.filter(p => p.status === 'Dipinjam').length"></p>
+                    </div>
+                    <div class="p-4 bg-green-50 rounded-lg">
+                        <h4 class="text-sm font-medium text-green-600">SUDAH DIKEMBALIKAN</h4>
+                        <p class="text-3xl font-bold text-green-800" x-text="peminjaman.filter(p => p.status === 'Dikembalikan').length"></p>
+                    </div>
+                </div>
+
                 <div class="overflow-x-auto">
                     <table class="min-w-full divide-y divide-gray-200">
                         <thead class="bg-gray-50">
                             <tr>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nama</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Barang</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                                <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Aksi</th>
+                                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Pemohon</th>
+                                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Barang</th>
+                                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Tanggal Akan Dipinjam</th>
+                                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Tanggal Akan DikembaliKan</th>
+                                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
+                                <th class="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase">Aksi</th>
                             </tr>
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200">
                             <template x-for="item in peminjaman" :key="item._id">
                                 <tr>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900" x-text="item.nama"></td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500" x-text="item.barang"></td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm">
-                                        <span x-text="item.status" :class="{ 'bg-yellow-100 text-yellow-800': item.status === 'Diajukan', 'bg-green-100 text-green-800': item.status === 'Disetujui', 'bg-red-100 text-red-800': item.status === 'Ditolak' }" class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full"></span>
+                                    <td class="px-4 py-4 whitespace-nowrap text-sm font-medium text-gray-900" x-text="item.nama"></td>
+                                    <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-700" x-text="item.barang"></td>
+                                    <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-500" x-text="new Date(item.tanggalPinjam).toLocaleDateString('id-ID')"></td>
+                                    <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-500" x-text="item.tanggalKembali ? new Date(item.tanggalKembali).toLocaleDateString('id-ID') : '-'"></td>
+                                    <td class="px-4 py-4 whitespace-nowrap text-sm">
+                                        <span x-text="item.status" :class="{ 'bg-yellow-100 text-yellow-800': item.status === 'Diajukan', 'bg-blue-100 text-blue-800': item.status === 'Dipinjam', 'bg-green-100 text-green-800': item.status === 'Disetujui' || item.status === 'Dikembalikan', 'bg-red-100 text-red-800': item.status === 'Ditolak' }" class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full"></span>
                                     </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium space-x-2">
-                                        <button @click="updatePeminjamanStatus(item._id, 'Disetujui')" class="text-green-600 hover:text-green-900" :disabled="item.status === 'Disetujui'">Setujui</button>
-                                        <button @click="updatePeminjamanStatus(item._id, 'Ditolak')" class="text-orange-600 hover:text-orange-900" :disabled="item.status === 'Ditolak'">Tolak</button>
+                                    <td class="px-4 py-4 whitespace-nowrap text-right text-sm font-medium space-x-4">
+                                        <a :href="`edit-peminjaman.html?id=${item._id}`" class="text-emerald-600 hover:text-emerald-900">Edit</a>
+                                        <button @click="deletePeminjaman(item._id)" class="text-red-600 hover:text-red-900">Hapus</button>
                                     </td>
                                 </tr>
                             </template>
                             <template x-if="peminjaman.length === 0">
-                                <tr><td colspan="4" class="px-6 py-4 text-center text-gray-500">Tidak ada data peminjaman.</td></tr>
+                                <tr><td colspan="6" class="px-6 py-4 text-center text-gray-500">Tidak ada data peminjaman.</td></tr>
                             </template>
                         </tbody>
                     </table>
@@ -153,46 +171,32 @@
 
     <script type="module">
         import { logout } from './src/auth.js';
-
         function getUserInfo() {
             const token = localStorage.getItem('token');
             if (!token) return null;
             try {
                 const payload = JSON.parse(atob(token.split('.')[1]));
                 if (payload.exp * 1000 < Date.now()) {
-                    localStorage.removeItem('token');
-                    return null;
+                    localStorage.removeItem('token'); return null;
                 }
                 return payload;
-            } catch (e) {
-                localStorage.removeItem('token');
-                return null;
-            }
+            } catch (e) { return null; }
         }
-        
         function checkAdminAccess() {
             const userInfo = getUserInfo();
             if (!userInfo || userInfo.user.role !== 'admin') {
-                alert('Akses Ditolak! Halaman ini hanya untuk Admin.');
+                alert('Akses Ditolak!');
                 window.location.href = '/index.html';
             }
         }
-
         function setupNavbar() {
             const authContainer = document.getElementById('auth-button-container');
             const navbarLinks = document.getElementById('navbar-links');
             const userInfo = getUserInfo();
-
             if (!authContainer || !navbarLinks) return;
-
             if (userInfo) {
-                authContainer.innerHTML = `
-                    <button id="logout-button" class="bg-gray-200 text-sm font-semibold px-4 py-1.5 rounded-md hover:bg-red-500 hover:text-white transition">
-                        Logout
-                    </button>
-                `;
+                authContainer.innerHTML = `<button id="logout-button" class="bg-gray-200 text-sm font-semibold px-4 py-1.5 rounded-md hover:bg-red-500 hover:text-white transition">Logout</button>`;
                 document.getElementById('logout-button').addEventListener('click', logout);
-                
                 if (userInfo.user && userInfo.user.role === 'admin') {
                     const adminMenuItem = document.createElement('li');
                     adminMenuItem.innerHTML = `<a href="admin.html" class="font-semibold text-red-600 hover:text-red-700">Admin Panel</a>`;
@@ -200,7 +204,6 @@
                 }
             }
         }
-
         document.addEventListener('DOMContentLoaded', () => {
             checkAdminAccess();
             setupNavbar();
@@ -211,55 +214,40 @@
         function adminPanel() {
             const API_URL = 'http://localhost:5000';
             const token = localStorage.getItem('token');
+            const getAuthHeaders = () => ({ 'Authorization': `Bearer ${token}` });
 
             return {
                 berita: [],
                 peminjaman: [],
                 aspirasi: [],
                 quill: null,
-                beritaForm: {
-                    judul: '',
-                    gambar: null,
-                },
+                beritaForm: { judul: '', gambar: null },
 
                 init() {
-                    this.quill = new Quill('#editor', {
-                        theme: 'snow',
-                        placeholder: 'Tulis isi berita di sini...'
-                    });
+                    this.quill = new Quill('#editor', { theme: 'snow', placeholder: 'Tulis isi berita...' });
                     this.fetchBerita();
                     this.fetchPeminjaman();
                     this.fetchAspirasi();
                 },
-
-                async getAuthHeaders() {
-                    return { 'Authorization': `Bearer ${token}` };
-                },
+                
                 async fetchBerita() {
                     try {
                         const response = await fetch(`${API_URL}/api/berita`);
-                        if (!response.ok) throw new Error('Gagal memuat berita');
                         this.berita = await response.json();
-                    } catch (error) { alert(error.message); }
+                    } catch (e) { console.error('Gagal fetch berita:', e); alert('Gagal memuat data berita.'); }
                 },
                 async submitBerita() {
                     const isiHTML = this.quill.root.innerHTML;
-                    if (!this.beritaForm.judul || !isiHTML || !this.beritaForm.gambar) {
+                    if (!this.beritaForm.judul || !isiHTML.trim() || !this.beritaForm.gambar) {
                         return alert("Harap lengkapi judul, isi, dan gambar berita.");
                     }
                     const formData = new FormData();
                     formData.append('judul', this.beritaForm.judul);
                     formData.append('isi', isiHTML);
                     formData.append('gambar', this.beritaForm.gambar);
-                    formData.append('tanggal', new Date().toISOString());
-
                     try {
-                        const response = await fetch(`${API_URL}/api/berita`, {
-                            method: 'POST',
-                            headers: await this.getAuthHeaders(),
-                            body: formData
-                        });
-                        if (!response.ok) throw new Error((await response.json()).message || 'Gagal upload');
+                        const res = await fetch(`${API_URL}/api/berita`, { method: 'POST', headers: getAuthHeaders(), body: formData });
+                        if (!res.ok) throw new Error((await res.json()).msg || 'Gagal upload');
                         alert('Berita berhasil diupload!');
                         window.location.reload();
                     } catch (error) { alert(error.message); }
@@ -267,54 +255,40 @@
                 async deleteBerita(id) {
                     if (!confirm('Yakin ingin menghapus berita ini?')) return;
                     try {
-                        const response = await fetch(`${API_URL}/api/berita/${id}`, {
-                            method: 'DELETE',
-                            headers: await this.getAuthHeaders()
-                        });
-                        if (!response.ok) throw new Error((await response.json()).message || 'Gagal menghapus');
+                        const res = await fetch(`${API_URL}/api/berita/${id}`, { method: 'DELETE', headers: getAuthHeaders() });
+                        if (!res.ok) throw new Error((await res.json()).msg || 'Gagal menghapus');
                         alert('Berita berhasil dihapus.');
                         this.fetchBerita();
                     } catch (error) { alert(error.message); }
                 },
 
-                // --- Metode untuk Layanan ---
                 async fetchPeminjaman() {
                     try {
-                        const response = await fetch(`${API_URL}/api/peminjaman`, { headers: await this.getAuthHeaders() });
-                        if (!response.ok) throw new Error('Gagal memuat data peminjaman');
+                        const response = await fetch(`${API_URL}/api/peminjaman`, { headers: getAuthHeaders() });
                         this.peminjaman = await response.json();
-                    } catch (error) { alert(error.message); }
+                    } catch (e) { console.error('Gagal fetch peminjaman:', e); alert('Gagal memuat data peminjaman.'); }
                 },
-                
-                async fetchAspirasi() {
+                async deletePeminjaman(id) {
+                    if (!confirm('Yakin ingin menghapus data peminjaman ini?')) return;
                     try {
-                        const response = await fetch(`${API_URL}/api/aspirasi`, { headers: await this.getAuthHeaders() });
-                        if (!response.ok) throw new Error('Gagal memuat data aspirasi');
-                        this.aspirasi = await response.json();
-                    } catch (error) { alert(error.message); }
-                },
-
-                async updatePeminjamanStatus(id, status) {
-                    try {
-                        const response = await fetch(`${API_URL}/api/peminjaman/${id}`, {
-                            method: 'PUT',
-                            headers: { ...(await this.getAuthHeaders()), 'Content-Type': 'application/json' },
-                            body: JSON.stringify({ status: status })
-                        });
-                        if (!response.ok) throw new Error('Gagal memperbarui status');
-                        alert(`Status berhasil diubah menjadi "${status}"`);
+                        const res = await fetch(`${API_URL}/api/peminjaman/${id}`, { method: 'DELETE', headers: getAuthHeaders() });
+                        if (!res.ok) throw new Error((await res.json()).msg || 'Gagal menghapus');
+                        alert('Data peminjaman berhasil dihapus.');
                         this.fetchPeminjaman();
                     } catch (error) { alert(error.message); }
                 },
 
+                async fetchAspirasi() {
+                    try {
+                        const response = await fetch(`${API_URL}/api/aspirasi`, { headers: getAuthHeaders() });
+                        this.aspirasi = await response.json();
+                    } catch (e) { console.error('Gagal fetch aspirasi:', e); alert('Gagal memuat data aspirasi.'); }
+                },
                 async deleteAspirasi(id) {
                     if (!confirm('Yakin ingin menghapus aspirasi ini?')) return;
                     try {
-                        const response = await fetch(`${API_URL}/api/aspirasi/${id}`, {
-                            method: 'DELETE',
-                            headers: await this.getAuthHeaders()
-                        });
-                        if (!response.ok) throw new Error('Gagal menghapus aspirasi');
+                        const res = await fetch(`${API_URL}/api/aspirasi/${id}`, { method: 'DELETE', headers: getAuthHeaders() });
+                        if (!res.ok) throw new Error((await res.json()).msg || 'Gagal menghapus');
                         alert('Aspirasi berhasil dihapus.');
                         this.fetchAspirasi();
                     } catch (error) { alert(error.message); }

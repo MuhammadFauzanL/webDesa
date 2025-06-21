@@ -4,10 +4,10 @@ const jwt = require('jsonwebtoken');
 
 // Fungsi middleware untuk otentikasi
 const auth = (req, res, next) => {
-    // 1. Ambil header 'Authorization'
+    
     const authHeader = req.header('Authorization');
 
-    // 2. Cek jika header tidak ada
+    
     if (!authHeader) {
         return res.status(401).json({ msg: 'Akses ditolak, header Authorization tidak ditemukan' });
     }
