@@ -12,20 +12,19 @@ const auth = (req, res, next) => {
         return res.status(401).json({ msg: 'Akses ditolak, header Authorization tidak ditemukan' });
     }
 
-    // 3. Pastikan formatnya adalah "Bearer [token]"
+  
     const tokenParts = authHeader.split(' ');
     if (tokenParts.length !== 2 || tokenParts[0] !== 'Bearer') {
         return res.status(401).json({ msg: 'Format token salah, harus "Bearer <token>"' });
     }
 
-    // 4. Ambil hanya bagian tokennya
+   
     const token = tokenParts[1];
 
     try {
-        // 5. Verifikasi token menggunakan secret key dari .env
+       
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
         
-        // 6. Lampirkan payload user ke request agar bisa digunakan oleh fungsi selanjutnya (seperti isAdmin)
         req.user = decoded.user;
         next();
     } catch (err) {

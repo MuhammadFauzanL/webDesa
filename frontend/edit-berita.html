@@ -152,7 +152,7 @@
                     formData.append('judul', this.berita.judul);
                     formData.append('isi', isiHTML);
                     
-                    // Hanya tambahkan gambar jika ada file baru yang dipilih
+                   
                     if (this.newImage) {
                         formData.append('gambar', this.newImage);
                     }
@@ -170,7 +170,7 @@
                         }
                         
                         alert('Berita berhasil diperbarui!');
-                        window.location.href = '/admin.html'; // Kembali ke panel admin setelah sukses
+                        window.location.href = '/admin.html'; 
                     } catch (error) {
                         alert(error.message);
                     }

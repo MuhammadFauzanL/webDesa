@@ -4,10 +4,9 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Login & Registrasi - Web Desa</title>
-    <!-- Memuat Tailwind CSS & Alpine.js -->
-    <script src="https://cdn.tailwindcss.com"></script>
+        <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/alpinejs" defer></script>
-    <!-- Memuat Font Inter -->
+    
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         [x-cloak] {
@@ -18,7 +17,6 @@
 
 <body class="bg-gray-100 h-full" x-data="authApp">
 
-    <!-- HEADER (Sama seperti halaman lain) -->
     <header class="flex items-center justify-between md:px-[8vw] px-[3vw] bg-white h-14 text-black shadow-sm fixed top-0 left-0 w-full z-50">
         <div class="logo">
             <a class="flex items-center gap-1" href="/">
@@ -45,7 +43,7 @@
             </div>
         </div>
 
-        <!-- Kolom Form Login/Registrasi -->
+    
         <div class="w-full md:w-2/5 h-full flex items-center justify-center p-6 md:px-12 bg-white overflow-auto">
             <div class="w-full max-w-sm">
 
@@ -75,7 +73,7 @@
                     </div>
                 </template>
 
-                <!-- Template Registrasi (Diubah hanya menggunakan Email & Password) -->
+               
                 <template x-if="mode === 'register'">
                     <div>
                         <h2 class="text-2xl font-bold text-[#139B82] mb-6 text-center">Registrasi Akun Warga</h2>
