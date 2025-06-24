@@ -10,7 +10,7 @@
     <style>.ql-editor { padding: 0 !important; }</style>
 </head>
 
-<body class="bg-gray-100 min-h-screen flex flex-col" x-data="bacaBeritaPanel()" x-init="loadBerita()">
+<body class="bg-gray-100 min-h-screen flex flex-col" x-data="bacaBeritaPanel()" x-init="init()">
     
     <header class="flex items-center justify-between md:px-[8vw] px-[3vw] bg-white h-14 text-black shadow-sm fixed top-0 left-0 w-full z-50">
         <div class="logo">
@@ -57,15 +57,41 @@
 
     <script type="module">
         import { logout } from './src/auth.js';
-        function getUserInfo() { /* ... kode getUserInfo dari jawaban sebelumnya ... */ }
-        function setupNavbar() { /* ... kode setupNavbar dari jawaban sebelumnya ... */ }
+        function getUserInfo() {
+            const token = localStorage.getItem('token');
+            if (!token) return null;
+            try {
+                const payload = JSON.parse(atob(token.split('.')[1]));
+                if (payload.exp * 1000 < Date.now()) { localStorage.removeItem('token'); return null; }
+                return payload;
+            } catch (e) { localStorage.removeItem('token'); return null; }
+        }
+        function setupNavbar() {
+            const authContainer = document.getElementById('auth-button-container');
+            const navbarLinks = document.getElementById('navbar-links');
+            const userInfo = getUserInfo();
+            if (!authContainer || !navbarLinks) return;
+            if (userInfo) {
+                authContainer.innerHTML = `<button id="logout-button" class="bg-gray-200 text-sm font-semibold px-4 py-1.5 rounded-md hover:bg-red-500 hover:text-white transition">Logout</button>`;
+                document.getElementById('logout-button').addEventListener('click', logout);
+                if (userInfo.user && userInfo.user.role === 'admin') {
+                    const adminMenuItem = document.createElement('li');
+                    adminMenuItem.innerHTML = `<a href="admin.html" class="font-semibold text-red-600 hover:text-red-700">Admin Panel</a>`;
+                    navbarLinks.insertBefore(adminMenuItem, authContainer);
+                }
+            }
+        }
         document.addEventListener('DOMContentLoaded', setupNavbar);
     </script>
 
     <script>
         function bacaBeritaPanel() {
+            const API_URL = 'http://localhost:5000';
             return {
                 berita: null,
+                init() {
+                    this.loadBerita();
+                },
                 async loadBerita() {
                     const params = new URLSearchParams(window.location.search);
                     const beritaId = params.get('id');
@@ -74,13 +100,16 @@
                         return;
                     }
                     try {
-                        const API_URL = 'http://localhost:5000';
                         const response = await fetch(`${API_URL}/api/berita/${beritaId}`);
                         if (!response.ok) throw new Error('Gagal mengambil detail berita');
                         const data = await response.json();
                         
                         data.tanggalFormatted = `Dipublikasikan pada ${new Date(data.tanggal).toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}`;
-                        data.gambar = `${API_URL}${data.gambar}`;
+                        
+                        // PERBAIKAN DI SINI
+                        if (data.gambar && !data.gambar.startsWith('http')) {
+                            data.gambar = `${API_URL}${data.gambar}`;
+                        }
                         
                         this.berita = data;
                         document.title = data.judul;

@@ -10,62 +10,114 @@
 <body class="bg-gray-100">
 
     <header class="flex items-center justify-between md:px-[8vw] px-[3vw] bg-white h-14 text-black shadow-sm fixed top-0 left-0 w-full z-50">
-        </header>
+        <div class="logo">
+            <a class="flex items-center gap-1" href="index.html">
+                <img class="h-7 -mt-1" src="https://img.icons8.com/pastel-glyph/64/40C057/marker--v1.png" alt="marker--v1" />
+                <span class="text-lg font-bold">Admin: Edit Peminjaman</span>
+            </a>
+        </div>
+        <nav>
+            <ul id="navbar-links" class="flex font-medium items-center gap-4">
+                 <li><a href="admin.html" class="hover:text-emerald-600">Admin Panel</a></li>
+                 <li id="auth-button-container"></li>
+            </ul>
+        </nav>
+    </header>
 
     <main class="container mx-auto px-4 sm:px-6 lg:px-8 py-8 pt-24">
         <h1 class="text-3xl font-bold text-gray-800 mb-6">Edit Peminjaman</h1>
 
         <div x-data="editPeminjamanPanel()" x-init="init()">
-            <div class="bg-white p-6 rounded-lg shadow-md mb-8">
-                <form @submit.prevent="submitUpdate" class="space-y-4">
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700">Nama Pemohon</label>
-                        <input type="text" x-model="peminjaman.nama" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm bg-gray-100" readonly>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700">Barang</label>
-                        <input type="text" x-model="peminjaman.barang" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm bg-gray-100" readonly>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700">Keperluan</label>
-                        <input type="text" x-model="peminjaman.keperluan" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm bg-gray-100" readonly>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700">Tanggal Pinjam</label>
-                        <input type="date" x-model="peminjaman.tanggalPinjam" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm bg-gray-100" readonly>
-                    </div>
-                    <div>
-                        <label for="tanggalKembali" class="block text-sm font-medium text-gray-700">Tanggal Akan DikembaliKan</label>
-                        <input type="date" id="tanggalKembali" x-model="peminjaman.tanggalKembali" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
-                    </div>
-                     <div>
-                        <label for="status" class="block text-sm font-medium text-gray-700">Status</label>
-                        <select id="status" x-model="peminjaman.status" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
-                            <option>Diajukan</option>
-                            <option>Disetujui</option>
-                            <option>Dipinjam</option>
-                            <option>Dikembalikan</option>
-                            <option>Ditolak</option>
-                        </select>
-                    </div>
-                    <div class="flex justify-end space-x-3 pt-4">
-                         <a href="admin.html" class="bg-gray-200 text-gray-700 py-2 px-4 rounded-md hover:bg-gray-300 font-semibold transition">Batal</a>
-                        <button type="submit" class="bg-emerald-600 text-white py-2 px-4 rounded-md hover:bg-emerald-700 font-semibold transition">Simpan Perubahan</button>
-                    </div>
-                </form>
-            </div>
+            <template x-if="peminjaman._id">
+                <div class="bg-white p-6 rounded-lg shadow-md mb-8">
+                    <form @submit.prevent="submitUpdate" class="space-y-4">
+                        <div>
+                            <label for="nama" class="block text-sm font-medium text-gray-700">Nama Pemohon</label>
+                            <input type="text" id="nama" x-model="peminjaman.nama" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
+                        </div>
+                        <div>
+                            <label for="barang" class="block text-sm font-medium text-gray-700">Barang</label>
+                            <input type="text" id="barang" x-model="peminjaman.barang" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
+                        </div>
+                        <div>
+                            <label for="keperluan" class="block text-sm font-medium text-gray-700">Keperluan</label>
+                            <input type="text" id="keperluan" x-model="peminjaman.keperluan" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
+                        </div>
+                        <div>
+                            <label for="tanggalPinjam" class="block text-sm font-medium text-gray-700">Tanggal Pinjam</label>
+                            <input type="date" id="tanggalPinjam" x-model="peminjaman.tanggalPinjam" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
+                        </div>
+                        <div>
+                            <label for="tanggalKembali" class="block text-sm font-medium text-gray-700">Tanggal Akan Dikembalikan</label>
+                            <input type="date" id="tanggalKembali" x-model="peminjaman.tanggalKembali" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
+                        </div>
+                         <div>
+                            <label for="status" class="block text-sm font-medium text-gray-700">Status</label>
+                            <select id="status" x-model="peminjaman.status" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500">
+                                <option>Diajukan</option>
+                                <option>Disetujui</option>
+                                <option>Dipinjam</option>
+                                <option>Dikembalikan</option>
+                                <option>Ditolak</option>
+                            </select>
+                        </div>
+                        <div class="flex justify-end space-x-3 pt-4">
+                             <a href="admin.html" class="bg-gray-200 text-gray-700 py-2 px-4 rounded-md hover:bg-gray-300 font-semibold transition">Batal</a>
+                            <button type="submit" class="bg-emerald-600 text-white py-2 px-4 rounded-md hover:bg-emerald-700 font-semibold transition">Simpan Perubahan</button>
+                        </div>
+                    </form>
+                </div>
+            </template>
+            <template x-if="!peminjaman._id">
+                <p class="text-center text-gray-500">Memuat data peminjaman...</p>
+            </template>
         </div>
     </main>
 
     <script type="module">
-        // Salin script untuk setupNavbar & checkAdminAccess dari halaman lain
+        import { logout } from './src/auth.js';
+
+        window.getUserInfo = function() {
+            const token = localStorage.getItem('token');
+            if (!token) return null;
+            try {
+                const payload = JSON.parse(atob(token.split('.')[1]));
+                if (payload.exp * 1000 < Date.now()) {
+                    localStorage.removeItem('token'); return null;
+                }
+                return payload;
+            } catch (e) { return null; }
+        }
+
+        window.checkAdminAccess = function() {
+            const userInfo = getUserInfo();
+            if (!userInfo || userInfo.user.role !== 'admin') {
+                alert('Akses Ditolak! Halaman ini hanya untuk Admin.');
+                window.location.href = '/index.html';
+            }
+        }
+        
+        function setupNavbar() {
+            const authContainer = document.getElementById('auth-button-container');
+            const userInfo = getUserInfo();
+            if (authContainer && userInfo) {
+                authContainer.innerHTML = `<button id="logout-button" class="bg-gray-200 text-sm font-semibold px-4 py-1.5 rounded-md hover:bg-red-500 hover:text-white transition">Logout</button>`;
+                document.getElementById('logout-button').addEventListener('click', logout);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            checkAdminAccess();
+            setupNavbar();
+        });
     </script>
     
     <script>
         function editPeminjamanPanel() {
+            const API_URL = 'http://localhost:5000';
             return {
                 peminjamanId: null,
-                peminjaman: { status: '' }, // Inisialisasi agar tidak error
+                peminjaman: {}, // Inisialisasi sebagai objek kosong
                 
                 init() {
                     const params = new URLSearchParams(window.location.search);
@@ -81,21 +133,44 @@
                 async fetchPeminjamanDetails() {
                     const token = localStorage.getItem('token');
                     try {
+                        const response = await fetch(`${API_URL}/api/peminjaman/${this.peminjamanId}`, {
+                            headers: { 'Authorization': `Bearer ${token}` }
+                        });
+                        
+                        if (!response.ok) {
+                            throw new Error('Gagal memuat detail peminjaman.');
+                        }
+                        
+                        const data = await response.json();
+
+                        if (data.tanggalPinjam) {
+                            data.tanggalPinjam = data.tanggalPinjam.split('T')[0];
+                        }
+                        if (data.tanggalKembali) {
+                            data.tanggalKembali = data.tanggalKembali.split('T')[0];
+                        }
+
+                        this.peminjaman = data;
 
                     } catch (error) {
                         alert(error.message);
+                        window.location.href = '/admin.html';
                     }
                 },
 
                 async submitUpdate() {
                     const token = localStorage.getItem('token');
                     const updateData = {
+                        nama: this.peminjaman.nama,
+                        barang: this.peminjaman.barang,
+                        keperluan: this.peminjaman.keperluan,
+                        tanggalPinjam: this.peminjaman.tanggalPinjam,
                         status: this.peminjaman.status,
-                        tanggalKembali: this.peminjaman.tanggalKembali || undefined
+                        tanggalKembali: this.peminjaman.tanggalKembali || null
                     };
 
                     try {
-                        const response = await fetch(`http://localhost:5000/api/peminjaman/${this.peminjamanId}`, {
+                        const response = await fetch(`${API_URL}/api/peminjaman/${this.peminjamanId}`, {
                             method: 'PUT',
                             headers: { 
                                 'Content-Type': 'application/json',
@@ -104,7 +179,10 @@
                             body: JSON.stringify(updateData)
                         });
 
-                        if (!response.ok) throw new Error((await response.json()).message || 'Gagal update');
+                        const resData = await response.json();
+                        if (!response.ok) {
+                            throw new Error(resData.msg || 'Gagal memperbarui data.');
+                        }
                         
                         alert('Data peminjaman berhasil diperbarui!');
                         window.location.href = '/admin.html';

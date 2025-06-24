@@ -5,7 +5,7 @@ const path = require('path');
 const connectDB = require('./config/db');
 
 // ✅ Karena .env di luar folder backend
-dotenv.config({ path: path.resolve(__dirname, '../.env') });
+dotenv.config({ path: path.resolve(__dirname, './.env') });
 
 // Debug output
 console.log("MONGO_URI dari .env:", process.env.MONGO_URI);
